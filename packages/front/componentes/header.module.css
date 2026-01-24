@@ -42,8 +42,22 @@
   font-family: "Times New Roman", serif;
   font-size: 42px;
   font-weight: 700;
+  color: #000;
   letter-spacing: 2px;
   text-align: center;
+}
+
+.logoContainer{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.logoContainer img{
+  height: 5rem;
+  width: 10rem;
 }
 
 /* Navegación derecha */

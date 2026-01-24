@@ -28,16 +28,19 @@ return (
         </nav>
 
         {/* Logo */}
-        <div className={styles.logo}>
-          BLOWY
+        <div className={styles.logoContainer}>
+          <div className={styles.logo}>
+            TRISHA
+          </div>  
+          <img
+            src="/trishaTigre.png">
+            
+          </img>
         </div>
+
 
         {/* Navegación derecha */}
         <nav className={styles.navRight}>
-          <div className={styles.dropdown}>
-            <a href="#">CUENTA</a>
-            <span className={styles.arrow}>▾</span>
-          </div>
 
           <a href="#">CONTACTO</a>
 
