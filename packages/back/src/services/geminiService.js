@@ -1,14 +1,14 @@
 // services/gemini.js
-
+import 'dotenv/config';
 import { GoogleGenAI } from "@google/genai";
 
 const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY
+  apiKey: process.env.API_KEY
 });
 
 export async function generar(prompt) {
   const response = await ai.models.generateContent({
-    model: "gemini-3-flash-preview",
+    model: "gemini-2.5-flash",
     contents: [
       {
         parts: [{ text: prompt }]

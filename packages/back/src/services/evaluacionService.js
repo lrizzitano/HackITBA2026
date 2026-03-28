@@ -2,21 +2,22 @@
 
 import { generar } from './geminiService.js';
 
-export async function evaluarMarca({ nombre, rubro, ubicacion, rangoPrecios }) {
-  const prompt = construirPrompt({ nombre, rubro, ubicacion, rangoPrecios });
+export async function evaluarMarca({ nombre, rubro, ubicacion, relacionCalidadPrecio }) {
+  const prompt = construirPrompt({ nombre, rubro, ubicacion, relacionCalidadPrecio });
 
   const texto = await generar(prompt);
 
   return parsearRespuesta(texto);
 }
 
-function construirPrompt({ nombre, rubro, ubicacion, rangoPrecios }) {
+function construirPrompt({ nombre, rubro, ubicacion, relacionCalidadPrecio }) {
   return `
 Realizá un análisis de marca de la siguiente empresa, enfocándote en sus principales características, su público objetivo y sus competidores:
 
 Nombre: ${nombre}
 Rubro: ${rubro}
 Ubicación: ${ubicacion}
+Relacion Calidad Precio: ${relacionCalidadPrecio}
 
 Respondé EXCLUSIVAMENTE en JSON válido con:
 
