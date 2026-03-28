@@ -1,6 +1,8 @@
 import React from "react";
 import styles from "./home.module.css"
 import Header from "@/componentes/header";
+import TarjetaProd from "@/componentes/tarjetaProd/tarjetaProd";
+import FooterComp from "@/componentes/footer/footer"
 
 const HomePage = () => {
   // Datos simulados basados en tu imagen
@@ -29,6 +31,31 @@ const HomePage = () => {
       price: "$140.000,00",
       image: "/collar.png",
     },
+        {
+      id: 5,
+      name: "Z ADIG CLASICA- cadena plateada",
+      price: "$159.000,00",
+      image: "/collar.png", // Reemplaza con tus rutas reales
+    },
+    {
+      id: 6,
+      name: "Zadig Rock clasica",
+      price: "$85.000,00",
+      image: "/collar.png",
+    },
+    {
+      id: 7,
+      name: "Zadig Rock mat negra",
+      price: "$88.000,00",
+      image: "/collar.png",
+    },
+    {
+      id: 8,
+      name: "YSL CUERO CLASICA",
+      price: "$140.000,00",
+      image: "/collar.png",
+    }
+
   ];
 
   return (
@@ -39,7 +66,7 @@ const HomePage = () => {
       <div className={styles.heroBanner}>
         {/* Aquí iría tu imagen de banner. Usa <img /> o el componente <Image /> de Next */}
         <img 
-            src="/collar.png" 
+            src="/trishaBanner.jpeg" 
             alt="Banner de colección" 
             className={styles.bannerImage} 
         />
@@ -50,25 +77,12 @@ const HomePage = () => {
 
         <div className={styles.productGrid}>
           {products.map((product) => (
-            <div key={product.id} className={styles.productCard}>
-              <div className={styles.imageContainer}>
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className={styles.productImage}
-                />
-              </div>
-              <div className={styles.productInfo}>
-                <h2 className={styles.productName}>{product.name}</h2>
-                <p className={styles.productPrice}>{product.price}</p>
-                <p className={styles.installments}>
-                  3 y 6 cuotas fijas, consultar financiacion
-                </p>
-              </div>
-            </div>
+          <TarjetaProd key={product.id} product={product} />
           ))}
         </div>
       </main>
+
+      <FooterComp/>
     </div>
   );
 };

@@ -1,0 +1,48 @@
+/* --- Tarjeta de Producto --- */
+.productCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra todo horizontalmente */
+  text-align: center;
+  cursor: pointer;
+}
+
+.imageContainer {
+  width: 100%;
+  aspect-ratio: 1 / 1; /* Mantiene las imágenes cuadradas */
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.productImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.productCard:hover .productImage {
+  transform: scale(1.05); /* Pequeño zoom al pasar el mouse (opcional) */
+}
+
+.productName {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #000;
+  margin: 0.5rem 0;
+  text-transform: uppercase; /* Fuerza mayúsculas si el texto original no lo tiene */
+  line-height: 1.4;
+}
+
+.productPrice {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 0.5rem;
+}
+
+.installments {
+  font-size: 0.8rem;
+  color: #666; /* Un gris más suave para la letra chica */
+  margin: 0;
+}

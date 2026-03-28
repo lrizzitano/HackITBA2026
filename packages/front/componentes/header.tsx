@@ -7,7 +7,7 @@ return (
     <header className={styles.header}>
       {/* Barra superior */}
       <div className={styles.topBar}>
-        Bienvenido 💗 pagos con tarjeta de crédito y débito por link de pago
+        
       </div>
 
       {/* Header principal */}
@@ -32,10 +32,6 @@ return (
           <div className={styles.logo}>
             TRISHA
           </div>  
-          <img
-            src="/trishaTigre.png">
-            
-          </img>
         </div>
 
 
@@ -43,8 +39,6 @@ return (
         <nav className={styles.navRight}>
 
           <a href="#">CONTACTO</a>
-
-          <span className={styles.icon}>Q</span>
 
           <div className={styles.cart}>
             🛒
