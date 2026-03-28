@@ -3,58 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GEO Dashboard - Test de Conexión</title>
+    <title>Reconocia</title>
     <link rel="stylesheet" href="css/index.css">
-    <script src="js/app.js"></script>
+    <script src="js/app.js" defer></script>
 </head>
 <body>
 
-    <div class="container">
-        <h2>Ingreso de Datos</h2>
-        <form id="dataForm">
-
-            <!-- Nombre -->
-            <label for="marca">Nombre de la Marca / Empresa:</label>
-            <input type="text" id="marca" placeholder="Ej: Nike, Apple, Mi Empresa" >
-
-            <!-- Website -->
-            <label for="website">Sitio Web:</label>
-            <input type="url" id="website" placeholder="https://www.miempresa.com" >
-
-            <!-- Rubro (ahora largo) -->
-            <label for="rubro">Rubro / Descripción del negocio:</label>
-            <textarea id="rubro" rows="4" 
-                placeholder="Describe en detalle a qué se dedica la empresa, qué vende, a quién apunta, etc."
-                ></textarea>
-
-            <!-- Ubicación -->
-            <label for="ubicacion">Ubicación:</label>
-            <input type="text" id="ubicacion" placeholder="Ej: Buenos Aires, Argentina" >
-
-            <!-- Tamaño empresa -->
-            <label for="empleados">Tamaño de la empresa:</label>
-            <select id="empleados" >
-                <option value="">Seleccionar</option>
-                <option value="1-10">1 - 10 empleados</option>
-                <option value="11-50">11 - 50 empleados</option>
-                <option value="51-200">51 - 200 empleados</option>
-                <option value="201-500">201 - 500 empleados</option>
-                <option value="500+">Más de 500 empleados</option>
-            </select>
-
-            <!-- Precios -->
-            <label>Rango de Precios:</label>
-            <div class="precio-container">
-                <input type="number" id="precioMin" placeholder="Mínimo" min="0" >
-                <input type="number" id="precioMax" placeholder="Máximo" min="0" >
-            </div>
-            <button type="submit" id="btnAnalizar">Generar Análisis</button>
+    <nav class="navbar">
+        <div class="nav-left">
+            <div class="logo">Reconoc<span>ia</span></div>
+            <div class="nav-divider"></div>
+            <a href="#" id="btnOpenAuditoriaNav" class="nav-item">Auditar Marca</a>
+        </div>
+        
+        <div class="nav-links">
+            <a href="#" id="btnOpenLogin" class="nav-icon" title="Iniciar Sesión">
+                <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                </svg>
+            </a>
             
-        </form>
+            <a href="#" id="btnOpenAuditoriaBtn" class="btn-nav">Probar Gratis</a>
+        </div>
+    </nav>
 
-        <div id="resultado"></div>
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Si la IA no te recomienda, <span class="highlight">tu marca no existe.</span></h1>
+            <p>Audita, mide y optimiza cómo ChatGPT, Claude y Gemini perciben a tu empresa frente a la competencia.</p>
+            <a href="#" id="btnOpenAuditoriaHero" class="btn-primary">Auditar mi marca ahora</a>
+        </div>
+        
+        <div class="terminal">
+            <div class="terminal-header">
+                <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+            </div>
+            <div class="terminal-body" id="typing-text"></div>
+        </div>
+    </header>
+
+    <section class="features">
+        <h2>El SEO tradicional ha muerto. <br>Bienvenido a <span class="highlight">reconocia</span>.</h2>
+        <div class="grid">
+            <div class="card-feature">
+                <svg class="feature-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                </svg>
+                <h3>Auditoría de Percepción</h3>
+                <p>Descubre qué adjetivos usa la Inteligencia Artificial cuando habla de tus productos y servicios.</p>
+            </div>
+            <div class="card-feature">
+                <svg class="feature-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+                </svg>
+                <h3>Radar de Competidores</h3>
+                <p>Compara tu posicionamiento (Share of Voice) contra tus 3 principales rivales en tiempo real.</p>
+            </div>
+            <div class="card-feature">
+                <svg class="feature-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+                </svg>
+                <h3>Plan de Acción Automático</h3>
+                <p>Recibe tareas exactas de contenido para "hackear" el entrenamiento de los LLMs a tu favor.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing">
+        <h2>Planes de Optimización</h2>
+        <div class="pricing-grid">
+            <div class="price-card">
+                <h3>Plan Scout</h3>
+                <div class="price">Gratis</div>
+                <ul>
+                    <li>Análisis en 1 LLM base</li>
+                    <li>Gráfico de Sentimiento</li>
+                    <li>Reporte estático</li>
+                </ul>
+                <a href="#" id="btnOpenAuditoriaPricing1" class="btn-outline">Comenzar</a>
+            </div>
+            <div class="price-card popular">
+                <div class="badge">Más elegido</div>
+                <h3>Plan Dominance</h3>
+                <div class="price">$49<span>/mes</span></div>
+                <ul>
+                    <li>Monitoreo en todos los LLMs</li>
+                    <li>Radar de Competidores en vivo</li>
+                    <li><b>Plan de Acción GEO Generativo</b></li>
+                    <li>Alertas por caídas de reputación</li>
+                </ul>
+                <button id="btnOpenAuditoriaPricing2" class="btn-primary">Suscribirse</button>
+            </div>
+        </div>
+    </section>
+
+    <div id="modalAuditoria" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-btn" id="closeAuditoria">&times;</span>
+            <div class="container" style="box-shadow: none; border: none; padding: 20px;">
+                <h2>Ingresa los datos de tu empresa</h2>
+                <p style="text-align: center; color: #d1d5db; margin-bottom: 20px;">Nuestro motor analizará tu posicionamiento actual en la red neuronal.</p>
+                
+                <form id="dataForm">
+                    <label for="marca">Nombre de la Marca / Empresa:</label>
+                    <input type="text" id="marca" placeholder="Ej: Nike, Apple, Mi Empresa" required>
+
+                    <label for="website">Sitio Web:</label>
+                    <input type="text" id="website" placeholder="https://www.miempresa.com" required>
+
+                    <label for="rubro">Rubro:</label>
+                    <input type="text" id="rubro" placeholder="Ej: Venta de Hardware, Seguros, etc." required>
+
+                    <label for="ubicacion">Ubicación:</label>
+                    <input type="text" id="ubicacion" placeholder="Ej: Buenos Aires, Argentina" required>
+
+                    <label for="calidadPrecio">Relación Calidad / Precio:</label>
+                    <select id="calidadPrecio" required>
+                        <option value="">Seleccionar</option>
+                        <option value="Economica">Económica / Accesible</option>
+                        <option value="Equilibrada">Equilibrada / Estándar</option>
+                        <option value="Premium">Premium / Alta Gama</option>
+                    </select>
+                    
+                    <button type="submit" id="btnAnalizar">Generar Análisis</button>
+                </form>
+                <div id="resultado"></div>
+            </div>
+        </div>
     </div>
-    
+
+    <div id="modalLogin" class="modal-overlay">
+        <div class="modal-content modal-small">
+            <span class="close-btn" id="closeLogin">&times;</span>
+            <div class="container" style="box-shadow: none; border: none; padding: 20px;">
+                <h2 style="color: #e9c46a;">Iniciar Sesión</h2>
+                <p style="text-align: center; color: #d1d5db; margin-bottom: 25px;">Accede a tu panel de control Reconocia.</p>
+                <form id="loginForm">
+                    <label for="email">Email corporativo:</label>
+                    <input type="text" id="email" placeholder="tu@empresa.com" required>
+                    <label for="password">Contraseña:</label>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                    <button type="submit" style="background-color: #f39c7e; color: #12181d;">Ingresar a la plataforma</button>
+                </form>
+                
+                <div id="loginMessage" style="margin-top: 20px; text-align: center; font-weight: bold; font-size: 1.1rem; display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+              <div class="logo">Reconoc<span>ia</span></div>
+                <p>Dominando la era del Generative Engine Optimization. Si la IA no te conoce, el mundo tampoco.</p>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Producto</h4>
+                <a href="#">Auditoría Base</a>
+                <a href="#">Radar Competitivo</a>
+                <a href="#">Precios</a>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Compañía</h4>
+                <a href="#">Sobre Nosotros</a>
+                <a href="#">Contacto</a>
+                <a href="#" style="color: #e9c46a;">HackITBA 2026</a> 
+            </div>
+            
+            <div class="footer-links">
+                <h4>Legal</h4>
+                <a href="#">Términos de Servicio</a>
+                <a href="#">Política de Privacidad</a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2026 Reconocia. Todos los derechos reservados. Construido en Buenos Aires, Argentina.</p>
+        </div>
+    </footer>
+
+    <div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0b0f19; z-index: 9999; justify-content: center; align-items: center; flex-direction: column;">
+        <div class="terminal-header" style="width: 300px; margin-bottom: 0;">
+            <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+        </div>
+        <div style="background: #1c242c; width: 300px; padding: 20px; border-radius: 0 0 8px 8px; border: 1px solid #334155; border-top: none; text-align: center;">
+            <h3 style="color: #f39c7e; margin-bottom: 10px;">Procesando Datos</h3>
+            <p style="color: #10b981; font-family: monospace; font-size: 14px;" id="loadingText">Consultando GPT-4o...</p>
+        </div>
+    </div>
 
 </body>
 </html>
