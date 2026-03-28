@@ -1,4 +1,4 @@
-# Trisha
+# THackitba
 
 Front. Desde root               npm run dev:front
 
