@@ -130,20 +130,18 @@ form.addEventListener('submit', async function(evento) {
     };
 
     try {
-        /*
+        
         // ATENCIÓN: Que tu compañero de backend confirme esta URL
-        const urlDelBackend = 'http://localhost:8000/evaluacion'; 
+        const urlDelBackend = 'http://localhost:8000/testData'; 
 
         const respuesta = await fetch(urlDelBackend, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(datosParaBackend)
+            method: 'GET'
         });
 
-        const datosRecibidos = await respuesta.json();
+        const data = await respuesta.json();
 
         // 3. GUARDAMOS EN LOCALSTORAGE (Este es el puente con tu compañero)
-        localStorage.setItem("resultadoAnalisis", JSON.stringify(datosRecibidos));*/ //COMENTADO HASTA QUE HALLA BACK
+        localStorage.setItem("resultadoAnalisis", JSON.stringify(data));
 
         // 4. REDIRIGIMOS A LA PÁGINA DE GRÁFICOS (Oculta la actual)
         window.location.href = "resultados.html";
