@@ -49,9 +49,25 @@ const data = {
     percepcion_scores: {
         calidad: 8,
         confianza: 7,
-        riesgo: 3,
-        incertidumbre: 4
-    }
+        riesgo_e_incertidumbre: 3,
+        atencion_al_cliente: 7,
+        nivel_servicio: 6,
+        presencia_en_la_web: 10
+    },
+
+    // =======================
+    // PERCEPCIÓN (COMPETIDOR)
+    // =======================
+    principal_competidor:"Empresa C",
+    percepcion_scores_competidor: {
+        calidad: 7,
+        confianza: 6,
+        riesgo_e_incertidumbre: 6,
+        atencion_al_cliente: 8,
+        nivel_servicio: 5,
+        presencia_en_la_web: 9
+    },
+
 };
 
 const conclusiones_plan = {
@@ -311,26 +327,138 @@ new Chart(document.getElementById('rankingChart'), {
     }
 });
 
-//Percepcion
-new Chart(document.getElementById('radarChart'), {
-    type: 'bar',
+
+// =======================
+// SCATTER - MAPA COMPETITIVO PRO
+// =======================
+
+// paleta simple (puedes ampliarla)
+const palette = [
+    '#3b82f6', '#ef4444', '#f59e0b',
+    '#10b981', '#8b5cf6', '#ec4899',
+    '#22c55e'
+];
+
+// unir data
+const empresas = data.menciones_competencia.map((m, index) => {
+    const ranking = data.ranking_empresas.find(r => r.nombre === m.nombre);
+
+    return {
+        nombre: m.nombre,
+        x: m.porcentaje,
+        y: ranking ? ranking.score : 0,
+        color: m.nombre === data.marca
+            ? '#22c55e' // 👈 tu empresa destacada
+            : palette[index % palette.length]
+    };
+});
+
+// 👉 crear UN dataset por empresa
+const datasets = empresas.map(e => ({
+    label: e.nombre,
+    data: [{ x: e.x, y: e.y, nombre: e.nombre }],
+    backgroundColor: e.color,
+    borderColor: e.color,
+    pointRadius: e.nombre === data.marca ? 10 : 6,
+    pointHoverRadius: 12
+}));
+
+new Chart(document.getElementById('scatterChart'), {
+    type: 'scatter',
     data: {
-        labels: ['Calidad', 'Confianza', 'Riesgo', 'Incertidumbre'],
-        datasets: [{
-            label: 'Percepción IA',
-            data: [
-                data.percepcion_scores.calidad,
-                data.percepcion_scores.confianza,
-                data.percepcion_scores.riesgo,
-                data.percepcion_scores.incertidumbre
-            ]
-        }]
+        datasets: datasets
     },
     options: {
+        responsive: true,
+        maintainAspectRatio: false,
+
+        plugins: {
+            title: {
+                display: true,
+                text: 'Mapa competitivo: Visibilidad vs Ranking'
+            },
+            legend: {
+                position: 'bottom' // 👈 queda mucho mejor
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        const d = context.raw;
+                        return `${d.nombre} → ${d.x}% menciones | score ${d.y}`;
+                    }
+                }
+            }
+        },
+
         scales: {
+            x: {
+                min: 0,
+                max: 100,
+                title: {
+                    display: true,
+                    text: '% Menciones (Visibilidad)'
+                },
+                grid: {
+                    color: (ctx) =>
+                        ctx.tick.value === 50 ? '#64748b' : '#334155'
+                }
+            },
             y: {
-                beginAtZero: true,
-                max: 10 // 🔥 importante porque tu escala es 1-10
+                min: 0,
+                max: 100,
+                title: {
+                    display: true,
+                    text: 'Score Ranking'
+                },
+                grid: {
+                    color: (ctx) =>
+                        ctx.tick.value === 50 ? '#64748b' : '#334155'
+                }
+            }
+        }
+    }
+});
+
+
+// =======================
+// RADAR - PERCEPCIÓN COMPLETA
+// =======================
+
+new Chart(document.getElementById('radarChart'), {
+    type: 'radar',
+    data: {
+        labels: [
+            'Calidad',
+            'Confianza',
+            'Riesgo e Incertidumbre',
+            'Atención al cliente',
+            'Nivel de servicio',
+            'Presencia en la web'
+        ],
+        datasets: [
+            {
+                label: data.marca,
+                data: [
+                    data.percepcion_scores.calidad,
+                    data.percepcion_scores.confianza,
+                    data.percepcion_scores.riesgo_e_incertidumbre,
+                    data.percepcion_scores.atencion_al_cliente,
+                    data.percepcion_scores.nivel_servicio,
+                    data.percepcion_scores.presencia_en_la_web
+                ]
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            r: {
+                min: 0,
+                max: 10,
+                ticks: {
+                    stepSize: 2
+                }
             }
         }
     }
@@ -388,6 +516,108 @@ contenedor.innerHTML = `
 
     </div>
 `;
+
+//COMPARACION DE PERCEPCION CON COMPETIDOR DIRECTO
+
+// =======================
+// DUMBBELL CHART (PRO)
+// =======================
+
+const categorias = [
+    'Calidad',
+    'Confianza',
+    'Riesgo',
+    'Atención',
+    'Servicio',
+    'Presencia Web'
+];
+
+const keys = [
+    "calidad",
+    "confianza",
+    "riesgo_e_incertidumbre",
+    "atencion_al_cliente",
+    "nivel_servicio",
+    "presencia_en_la_web"
+];
+
+// dataset para líneas (la "barra" entre puntos)
+const lineData = categorias.map((cat, i) => ({
+    x: data.percepcion_scores[keys[i]],
+    x2: data.percepcion_scores_competidor[keys[i]],
+    y: cat
+}));
+
+// puntos TU MARCA
+const puntosMiMarca = categorias.map((cat, i) => ({
+    x: data.percepcion_scores[keys[i]],
+    y: cat
+}));
+
+// puntos COMPETIDOR
+const puntosCompetidor = categorias.map((cat, i) => ({
+    x: data.percepcion_scores_competidor[keys[i]],
+    y: cat
+}));
+
+new Chart(document.getElementById('comparacionChart'), {
+    type: 'bar',
+    data: {
+        labels: categorias,
+        datasets: [
+            // línea (simulada con floating bars)
+            {
+                label: 'Diferencia',
+                data: categorias.map((_, i) => [
+                    Math.min(
+                        data.percepcion_scores[keys[i]],
+                        data.percepcion_scores_competidor[keys[i]]
+                    ),
+                    Math.max(
+                        data.percepcion_scores[keys[i]],
+                        data.percepcion_scores_competidor[keys[i]]
+                    )
+                ]),
+                backgroundColor: '#c9a85b',
+                borderSkipped: false,
+                barThickness: 6
+            },
+            // punto TU EMPRESA
+            {
+                type: 'scatter',
+                label: data.marca,
+                data: puntosMiMarca,
+                pointRadius: 6
+            },
+            // punto COMPETIDOR
+            {
+                type: 'scatter',
+                label: data.principal_competidor,
+                data: puntosCompetidor,
+                pointRadius: 6
+            }
+        ]
+    },
+    options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+
+        plugins: {
+            title: {
+                display: true,
+                text: `Comparación vs ${data.principal_competidor}`
+            }
+        },
+
+        scales: {
+            x: {
+                min: 0,
+                max: 10
+            }
+        }
+    }
+});
 
 //ANALISIS FINAL
 
