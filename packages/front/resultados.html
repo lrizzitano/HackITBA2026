@@ -5,28 +5,141 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GEO Dashboard - Test de Conexión</title>
     <link rel="stylesheet" href="css/resultado.css">
-    <script src="js/resultados.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/resultados.js"></script>
+    
 </head>
 <body>
 <div class="graficos">
 
     <div class="card">
         <h3>Menciones</h3>
-        <canvas id="mencionesChart"></canvas>
+        <div class="chart-container">
+            <canvas id="mencionesChart"></canvas>
+        </div>
     </div>
 
     <div class="card">
         <h3>Ranking</h3>
-        <canvas id="rankingChart"></canvas>
+        <div class="chart-container">
+            <canvas id="rankingChart"></canvas>
+        </div>
+        <div class="preguntas-ranking"></div>
+        
     </div>
 
     <div class="card">
-        <h3>Percepción IA</h3>
-        <canvas id="radarChart"></canvas>
+        <h3>Puntaje de categorias</h3>
+        <div class="chart-container">
+            <canvas id="radarChart"></canvas>
+        </div>
+        
+    </div>
+
+    
+</div>
+<div id="resultado"></div>
+<div id="analisis-ia">
+
+    <div class="card">
+        <h3>Resumen Ejecutivo</h3>
+        <p id="resumen"></p>
+    </div>
+
+    <div class="graficos">
+
+        <div class="card">
+            <h3>Score General</h3>
+            <div class="score" id="score"></div>
+            <p id="veredicto"></p>
+        </div>
+
+        <div class="card">
+            <h3>Hallazgos</h3>
+            <ul id="hallazgos"></ul>
+        </div>
+
+        <div class="card">
+            <h3>Fortalezas</h3>
+            <div id="fortalezas"></div>
+        </div>
+
+        <div class="card">
+            <h3>Debilidades</h3>
+            <div id="debilidades"></div>
+        </div>
+
+        <div class="card">
+            <h3>Oportunidades</h3>
+            <ul id="oportunidades"></ul>
+        </div>
+
+        <div class="card">
+            <h3>Riesgos</h3>
+            <ul id="riesgos"></ul>
+        </div>
+
+        <div class="card">
+            <h3>Comparación</h3>
+            <p><strong id="competidor"></strong></p>
+
+            <p>Ventajas</p>
+            <ul id="ventajas"></ul>
+
+            <p>Desventajas</p>
+            <ul id="desventajas"></ul>
+
+            <p id="gap"></p>
+        </div>
+
+        <div class="card">
+            <h3>Recomendaciones</h3>
+
+            <p><strong>Inmediatas</strong></p>
+            <ul id="rec-inmediatas"></ul>
+
+            <p><strong>Corto plazo</strong></p>
+            <ul id="rec-corto"></ul>
+
+            <p><strong>Mediano plazo</strong></p>
+            <ul id="rec-mediano"></ul>
+        </div>
+
+        <div class="card">
+            <h3>Plan de acción</h3>
+            <div id="plan"></div>
+        </div>
+
+        <div class="card">
+            <h3>Confianza del análisis</h3>
+            <div class="barra"><div id="confianza-bar"></div></div>
+        </div>
+
+        <div class="card">
+            <h3>Cobertura</h3>
+
+            <p>Website</p>
+            <div class="barra"><div id="cov-web"></div></div>
+
+            <p>Menciones</p>
+            <div class="barra"><div id="cov-men"></div></div>
+
+            <p>Ranking</p>
+            <div class="barra"><div id="cov-rank"></div></div>
+
+            <p>Preguntas</p>
+            <div class="barra"><div id="cov-pre"></div></div>
+        </div>
+
+        <div class="card">
+            <h3>Impacto estimado</h3>
+            <p id="impacto"></p>
+        </div>
+
     </div>
 
 </div>
+<button>Realizar comparacion directa con competidores</button>
 </body>
 </html>
 
