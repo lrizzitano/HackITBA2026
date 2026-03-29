@@ -366,55 +366,78 @@ new Chart(document.getElementById('rankingChart'), {
             label: 'Score',
             data: rankingOrdenado.map(e => e.score),
             backgroundColor: coloresRanking,
-            borderRadius: 6 // Mantenemos tus bordes redondeados que quedan muy bien
+            borderRadius: 6
         }]
     },
+    // 🔥 NUEVO: Plugin para dibujar el número al final de la barra
+    plugins: [{
+        id: 'numerosEnBarras',
+        afterDatasetsDraw(chart) {
+            const { ctx } = chart;
+            chart.data.datasets.forEach((dataset, i) => {
+                chart.getDatasetMeta(i).data.forEach((bar, index) => {
+                    const valor = dataset.data[index];
+                    ctx.fillStyle = '#ffffff'; // Color del número
+                    ctx.font = 'bold 13px sans-serif';
+                    ctx.textAlign = 'left';
+                    ctx.textBaseline = 'middle';
+                    // Escribimos el valor 8 píxeles a la derecha de donde termina la barra
+                    ctx.fillText(valor, bar.x + 8, bar.y);
+                });
+            });
+        }
+    }],
     options: {
+        indexAxis: 'y', // <--- LA CLAVE PARA GIRARLO A HORIZONTAL
         responsive: true,
         maintainAspectRatio: false,
+        
+        // Damos un poco de margen a la derecha para que los números no se corten
+        layout: {
+            padding: { right: 30 }
+        },
 
         plugins: {
-            // 1. MEJORA DEL TÍTULO
             title: {
                 display: true,
                 text: 'Ranking de empresas (Score IA)',
-                color: '#ffffff', // Título en blanco
+                color: '#ffffff',
                 font: {
-                    size: 20, // Más grande
+                    size: 20,
                     weight: 'bold'
                 },
                 padding: { bottom: 20 }
             },
             legend: {
-                display: false // Mantenemos esto apagado ya que el color explica la barra
+                display: false
             }
         },
 
         scales: {
-            x: { // <--- EJE X (Nombres de las empresas)
-                ticks: {
-                    color: '#e2e8f0', // Nombres en gris claro
-                    font: {
-                        size: 14 // Texto más legible
-                    }
-                },
-                grid: {
-                    display: false // Ocultamos las líneas verticales para limpiar el diseño
-                }
-            },
-            y: { // <--- EJE Y (Números 0 - 100)
+            x: { // <--- EJE X (Números 0 - 100)
                 beginAtZero: true,
                 max: 100,
                 ticks: {
-                    color: '#ffffff', // Números en blanco puro
+                    color: '#ffffff',
                     font: {
                         size: 14,
-                        weight: 'bold' // Negrita para el score
+                        weight: 'bold'
                     }
                 },
                 grid: {
-                    color: 'rgba(255, 255, 255, 0.15)', // Líneas horizontales sutiles
-                    tickColor: 'transparent' // Quitamos la pequeña rayita que une el número con la línea
+                    color: 'rgba(255, 255, 255, 0.15)', // Líneas de guía verticales
+                    tickColor: 'transparent'
+                }
+            },
+            y: { // <--- EJE Y (Nombres de las empresas)
+                ticks: {
+                    color: '#e2e8f0',
+                    font: {
+                        size: 14
+                    }
+                },
+                grid: {
+                    display: false // Ocultamos las líneas horizontales para limpiar el diseño
                 }
             }
         }
