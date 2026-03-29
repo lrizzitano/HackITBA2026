@@ -1,6 +1,7 @@
 // services/evaluacion.service.js
 
 import { generar } from './geminiService.js';
+import { getMarkdownContent } from './webScrapper.js';
 // import { generar } from './chatgptService.js';
 //import { generar } from './deepseekService.js';
 //import { generar } from './groqService.js';
@@ -30,11 +31,11 @@ export async function evaluarMarca({ nombre, rubro, ubicacion, relacionCalidadPr
     percepcion_scores : ranks
   }
 
-  const juez = await llamarAlJuez('https://api.judge.dev/evaluar', resultado);
+  const juez = await llamarAlJuez(urlPagina, resultado);
 
   resultado = {
     ...resultado,
-    conclusionJuez: juez.conclusionJuez
+    conclusionesJuez: juez.conclusionJuez
   }
 
   console.log("Resultado final:", resultado);
@@ -350,7 +351,7 @@ async function ejecutarConDelay(prompts, delay = 5000) {
 }
 
 async function llamarAlJuez(url, data) {
-  const systemPrompt = ```
+  const systemPrompt = `
   Actúa como un Chief Marketing Officer (CMO) y Estratega Senior experto en LLMEO (LLM Engine Optimization). Tu función es realizar auditorías de posicionamiento de marca en modelos de inteligencia artificial (IA).
   
   OBJETIVO:
@@ -358,7 +359,7 @@ async function llamarAlJuez(url, data) {
   
   REGLAS DE SALIDA:
   1. Responde ÚNICAMENTE con un objeto JSON válido.
-  2. NO incluyas introducciones, comentarios, ni bloques de código de Markdown (sin \``` con json). Solo el texto del objeto.
+  2. NO incluyas introducciones, comentarios, ni bloques de código de Markdown (sin backtick ni json). Solo el texto del objeto.
   3. El campo 'score_general' debe ser un número entero de 0 a 100 basado en: Visibilidad (40%), Sentimiento (30%) y Calidad del Contenido Web (30%).
   4. Las recomendaciones deben ser accionables y técnicas (ej. 'Modificar tal H1', 'Agregar Schema.org', 'Crear FAQ semántica').
   
@@ -425,7 +426,7 @@ async function llamarAlJuez(url, data) {
   porcentaje de menciones = proporcion en que aparece en prompts preguntando por algun servicio del rubro
   posicionamiento: promedio de posicion en respuestas de a 10 marcas
   ${data}
-  ```
+  `
 
   const respuesta = await generar(systemPrompt);
 
