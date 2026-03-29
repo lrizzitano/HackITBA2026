@@ -10,8 +10,11 @@ body {
 
 /* ELIMINAR EL GRADIENTE - Texto sólido y profesional */
 .highlight {
-    color: #f39c7e; /* Coral cálido sólido */
+    color: #f1f1f1; /* Coral cálido sólido */
     font-weight: 800;
+}
+.highlight span {
+    color: #f39c7e; /* Dorado Viejo sólido */
 }
 
 /* NUEVA CLASE PARA LOS ÍCONOS MINIMALISTAS */
@@ -256,3 +259,58 @@ button[type="submit"]:hover {
     from { opacity: 0; transform: translateY(-20px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
+/* ========================================= */
+/* ESTILOS PÁGINA DE SERVICIOS (Sales Page) */
+/* ========================================= */
+
+#servicesPageContent {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Services Hero */
+.services-hero {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 80vh; text-align: center; padding: 120px 20px 80px;
+    background: radial-gradient(circle at center, #1c2732 0%, #12181d 70%);
+}
+.services-hero-content h1 { font-size: 3.8rem; margin: 0 auto 25px auto; max-width: 900px; color: #f1f1f1; line-height: 1.1;}
+.services-hero-content p { font-size: 1.3rem; color: #d1d5db; margin: 0 auto 50px auto; max-width: 700px; }
+.services-cta-group { display: flex; align-items: center; justify-content: center; gap: 15px; }
+
+/* Services Process (Paso a Paso) */
+.services-process { padding: 100px 20px; text-align: center; background: #1c242c; }
+.services-process h2 { font-size: 2.8rem; margin-bottom: 10px; color: #f1f1f1; }
+.subtitle { color: #a0aec0; font-size: 1.2rem; margin-bottom: 70px; }
+
+.process-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; max-width: 1100px; margin: 0 auto; }
+
+/* Reutilizamos card-feature pero le sumamos detalles */
+.process-grid .card-feature { 
+    background: #12181d; padding: 50px 40px; border-radius: 8px; 
+    border: 1px solid #2d3748; position: relative; text-align: left;
+    transition: 0.3s;
+}
+.process-grid .card-feature:hover { border-color: #f39c7e; transform: translateY(-5px); }
+
+.step-number {
+    position: absolute; top: -20px; left: -20px;
+    background-color: #f39c7e; color: #12181d; /* Fondo Coral, Texto Oscuro */
+    width: 50px; height: 50px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem; font-weight: bold; font-family: monospace;
+    box-shadow: 0 4px 10px rgba(243, 156, 126, 0.3);
+}
+
+.border-coral { border-top: 3px solid #f39c7e !important; }
+.border-gold { border-top: 3px solid #e9c46a !important; }
+
+/* Services Value Prop */
+.services-value { padding: 100px 20px; background-color: #12181d; display: flex; justify-content: center; }
+.services-value .card.popular { max-width: 800px; width: 100%; border-width: 2px; }
+.services-value h2 { text-align: center; color: #e9c46a; margin-bottom: 40px; font-size: 2.5rem; }

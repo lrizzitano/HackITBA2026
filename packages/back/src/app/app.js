@@ -10,7 +10,7 @@ export default async function aplication() {
     app.use(cors());
 /*
     app.use(cors({
-        origin:"http://loalhost3000",
+        origin:"http://loalhost:3000",
         methods: ["GET","POST","PUT","DELETE","PATCH"],
         allowedHeaders:["Content-Type","Authorization"]
     }))*/

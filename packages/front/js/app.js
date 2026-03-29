@@ -1,17 +1,58 @@
 // --- LÓGICA DE LOS MODALES ---
 document.addEventListener('DOMContentLoaded', () => {
-    // Referencias a los Modales
+    // --- LÓGICA DE NAVEGACIÓN (HOME VS SERVICIOS) ---
+    const logoHome = document.getElementById('logoHome');
+    const btnShowServices = document.getElementById('btnShowServices');
+    const homePageContent = document.getElementById('homePageContent');
+    const servicesPageContent = document.getElementById('servicesPageContent');
+
+    // Referencias a los modales
     const modalAuditoria = document.getElementById('modalAuditoria');
     const modalLogin = document.getElementById('modalLogin');
     
-    // TODOS los botones que abren Auditoría
+    // Referencias a los botones de cerrar (la X)
+    const closeAuditoria = document.getElementById('closeAuditoria');
+    const closeLogin = document.getElementById('closeLogin');
+
+    // Función para cambiar de "página"
+    const showPage = (pageToShow) => {
+        if (pageToShow === 'services') {
+            homePageContent.style.display = 'none';
+            servicesPageContent.style.display = 'block';
+            window.scrollTo(0, 0); 
+            btnShowServices.style.color = '#e9c46a'; 
+        } else {
+            homePageContent.style.display = 'block';
+            servicesPageContent.style.display = 'none';
+            btnShowServices.style.color = '#d1d5db'; 
+        }
+    };
+
+    // Eventos de Navegación
+    if(btnShowServices) {
+        btnShowServices.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPage('services');
+        });
+    }
+
+    if(logoHome) {
+        logoHome.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPage('home');
+        });
+    }
+    
+    // Referencias a los botones de Auditoría
     const btnOpenAuditoriaNav = document.getElementById('btnOpenAuditoriaNav');
     const btnOpenAuditoriaBtn = document.getElementById('btnOpenAuditoriaBtn');
-    const btnOpenAuditoriaHero = document.getElementById('btnOpenAuditoriaHero'); // <-- NUEVO
-    const btnOpenAuditoriaPricing1 = document.getElementById('btnOpenAuditoriaPricing1'); // <-- NUEVO
-    const btnOpenAuditoriaPricing2 = document.getElementById('btnOpenAuditoriaPricing2'); // <-- NUEVO
+    const btnOpenAuditoriaHero = document.getElementById('btnOpenAuditoriaHero'); 
+    const btnOpenAuditoriaPricing1 = document.getElementById('btnOpenAuditoriaPricing1'); 
+    const btnOpenAuditoriaPricing2 = document.getElementById('btnOpenAuditoriaPricing2'); 
+    const btnOpenAuditoriaServices = document.getElementById('btnOpenAuditoriaServices');
+    const btnOpenAuditoriaServicesBottom = document.getElementById('btnOpenAuditoriaServicesBottom');
     
-    // Botón para abrir Login
+    // Referencia al botón de Login
     const btnOpenLogin = document.getElementById('btnOpenLogin');
 
     // Función genérica para abrir un modal
@@ -23,11 +64,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Asignar eventos de apertura a TODOS los botones
     if(btnOpenAuditoriaNav) btnOpenAuditoriaNav.addEventListener('click', (e) => openModal(e, modalAuditoria));
     if(btnOpenAuditoriaBtn) btnOpenAuditoriaBtn.addEventListener('click', (e) => openModal(e, modalAuditoria));
-    
-    // <-- NUEVOS EVENTOS -->
     if(btnOpenAuditoriaHero) btnOpenAuditoriaHero.addEventListener('click', (e) => openModal(e, modalAuditoria));
     if(btnOpenAuditoriaPricing1) btnOpenAuditoriaPricing1.addEventListener('click', (e) => openModal(e, modalAuditoria));
     if(btnOpenAuditoriaPricing2) btnOpenAuditoriaPricing2.addEventListener('click', (e) => openModal(e, modalAuditoria));
+    if(btnOpenAuditoriaServices) btnOpenAuditoriaServices.addEventListener('click', (e) => openModal(e, modalAuditoria));
+    if(btnOpenAuditoriaServicesBottom) btnOpenAuditoriaServicesBottom.addEventListener('click', (e) => openModal(e, modalAuditoria));
+    
     if(btnOpenLogin) btnOpenLogin.addEventListener('click', (e) => openModal(e, modalLogin));
 
     // Asignar eventos de cierre (la X)
@@ -42,27 +84,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- LÓGICA SIMULADA DEL LOGIN ---
     const loginForm = document.getElementById('loginForm');
-    const loginMessage = document.getElementById('loginMessage'); // Capturamos el div del mensaje
+    const loginMessage = document.getElementById('loginMessage'); 
 
     if(loginForm) {
         loginForm.addEventListener('submit', (e) => {
-            e.preventDefault(); // Evita que recargue la página
+            e.preventDefault(); 
             
-            // 1. Mostrar el mensaje de éxito en verde esmeralda
             loginMessage.style.display = 'block';
             loginMessage.style.color = '#10b981'; 
             loginMessage.innerText = "¡Bienvenido! Sesión iniciada correctamente.";
 
-            // 2. Deshabilitar el botón para que no hagan doble clic
             const btnSubmit = loginForm.querySelector('button[type="submit"]');
             btnSubmit.innerText = "Ingresando...";
             btnSubmit.disabled = true;
 
-            // 3. Esperar 1.5 segundos para que el usuario lea el mensaje, luego cerrar el modal
             setTimeout(() => {
-                modalLogin.style.display = 'none'; // Cierra el modal
+                modalLogin.style.display = 'none'; 
                 
-                // Resetea el modal por si lo vuelven a abrir
                 loginMessage.style.display = 'none';
                 loginForm.reset();
                 btnSubmit.innerText = "Ingresar a la plataforma";
@@ -76,11 +114,11 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', () => {
     const textElement = document.getElementById('typing-text');
     const textArray = [
-        "> User: ¿Qué marca me recomiendas para mi necesidad?\n",
-        "> ChatGPT: Evaluando opciones del mercado...\n",
-        "> ChatGPT: Te recomiendo a tu competencia directa.\n",
-        "> User: ¿Por qué no recomiendas MI marca?\n",
-        "> ChatGPT: No tengo suficiente información sobre ella en mis datos de entrenamiento. 🔴"
+        "> TU: Quiero resolver este problema que tengo, donde voy\n",
+        "> ChatGPT: Te recomiendo a tu competencia directa 🧐\n",
+        "> TU: ¿Y mi marca? ¿Por qué no aparece?\n",
+        "> ChatGPT: Lo siento… no conozco esa empresa 🔴\n",
+       
     ];
     let charIndex = 0;
     let stringIndex = 0;
@@ -88,69 +126,55 @@ document.addEventListener('DOMContentLoaded', () => {
     function typeWriter() {
         if (stringIndex < textArray.length) {
             if (charIndex < textArray[stringIndex].length) {
-                textElement.innerHTML += textArray[stringIndex].charAt(charIndex);
+                const currentChar = textArray[stringIndex].charAt(charIndex);
+
+                if(textArray[stringIndex].includes("🔴")) {
+                    textElement.innerHTML += `<span style="color:#ef4444;">${currentChar}</span>`;
+                } else if(currentChar === '\n') {
+                    textElement.innerHTML += '<br><br>';
+                } else {
+                    textElement.innerHTML += currentChar;
+                }
+
                 charIndex++;
-                setTimeout(typeWriter, 40); // Velocidad de escritura
+                setTimeout(typeWriter, 50); 
             } else {
                 stringIndex++;
                 charIndex = 0;
-                setTimeout(typeWriter, 600); // Pausa entre líneas
+                let pause = 600;
+                if(textArray[stringIndex - 1].includes("🔴")) pause = 1200;
+                if(textArray[stringIndex - 1].includes("💀")) pause = 1500;
+                setTimeout(typeWriter, pause);
             }
         }
     }
-    setTimeout(typeWriter, 1000); // Esperar 1 segundo antes de empezar
+    setTimeout(typeWriter, 1000); 
 });
 
-
-// --- LÓGICA DEL FORMULARIO Y CONEXIÓN AL BACKEND ---
+// --- LÓGICA DEL FORMULARIO Y REDIRECCIÓN INMEDIATA ---
 const form = document.getElementById('dataForm');
-const resultadoDiv = document.getElementById('resultado');
-const btnAnalizar = document.getElementById('btnAnalizar');
 
-form.addEventListener('submit', async function(evento) {
-    evento.preventDefault(); 
+if(form) {
+    form.addEventListener('submit', function(evento) {
+        evento.preventDefault(); 
 
-    // 1. Ocultar el modal actual y mostrar la pantalla de carga fullscreen
-    document.getElementById('modalAuditoria').style.display = 'none';
-    const loadingOverlay = document.getElementById('loadingOverlay');
-    const loadingText = document.getElementById('loadingText');
-    loadingOverlay.style.display = 'flex';
+        // 1. Ocultar el modal actual
+        const modalAuditoria = document.getElementById('modalAuditoria');
+        if(modalAuditoria) modalAuditoria.style.display = 'none';
 
-    // Animación de texto de carga
-    setTimeout(() => loadingText.innerText = "Cruzando datos con Claude 3...", 2000);
-    setTimeout(() => loadingText.innerText = "Calculando GEO Score...", 4500);
+        // 2. Preparar los datos
+        const datosParaBackend = {
+            marca: document.getElementById('marca').value,
+            website: document.getElementById('website').value, 
+            rubro: document.getElementById('rubro').value,
+            ubicacion: document.getElementById('ubicacion').value,
+            calidad_precio: document.getElementById('calidadPrecio').value
+        };
 
-    // 2. Preparar los datos
-    const datosParaBackend = {
-        marca: document.getElementById('marca').value,
-        website: document.getElementById('website').value, 
-        rubro: document.getElementById('rubro').value,
-        ubicacion: document.getElementById('ubicacion').value,
-        calidad_precio: document.getElementById('calidadPrecio').value
-    };
+        // 3. Guardamos en localStorage
+        localStorage.setItem("geoInputs", JSON.stringify(datosParaBackend));
 
-    try {
-        /*
-        // ATENCIÓN: Que tu compañero de backend confirme esta URL
-        const urlDelBackend = 'http://localhost:8000/evaluacion'; 
-
-        const respuesta = await fetch(urlDelBackend, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(datosParaBackend)
-        });
-
-        const datosRecibidos = await respuesta.json();
-
-        // 3. GUARDAMOS EN LOCALSTORAGE (Este es el puente con tu compañero)
-        localStorage.setItem("resultadoAnalisis", JSON.stringify(datosRecibidos));*/ //COMENTADO HASTA QUE HALLA BACK
-
-        // 4. REDIRIGIMOS A LA PÁGINA DE GRÁFICOS (Oculta la actual)
+        // 4. Redirigimos INMEDIATAMENTE al dashboard
         window.location.href = "resultados.html";
-
-    } catch (error) {
-        console.error("Error:", error);
-        loadingOverlay.style.display = 'none';
-        alert("Error de conexión con el backend.");
-    }
-});
+    });
+}

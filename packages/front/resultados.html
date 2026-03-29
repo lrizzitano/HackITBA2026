@@ -3,143 +3,227 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GEO Dashboard - Test de Conexión</title>
+    <title>Reconocia - Panel de Resultados</title>
     <link rel="stylesheet" href="css/resultado.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="js/resultados.js"></script>
-    
+    <script src="js/resultados.js" defer></script>
 </head>
 <body>
-<div class="graficos">
 
-    <div class="card">
-        <h3>Menciones</h3>
-        <div class="chart-container">
-            <canvas id="mencionesChart"></canvas>
-        </div>
-    </div>
-
-    <div class="card">
-        <h3>Ranking</h3>
-        <div class="chart-container">
-            <canvas id="rankingChart"></canvas>
-        </div>
-        <div class="preguntas-ranking"></div>
+    <aside class="sidebar">
+        <div class="logo">Reconoc<span>ia</span></div>
+        <ul class="nav-tabs">
+            
+            <li class="tab-btn active" data-target="tab-metricas">1. Inteligencia Competitiva</li>
+            <li class="tab-btn" data-target="tab-diagnostico">2. Diagnóstico IA</li>
+            <li class="tab-btn" data-target="tab-resumen">3. Resumen Ejecutivo</li>
+            <li class="tab-btn" data-target="tab-plan">4. Plan de Acción</li>
+        </ul>
+        <div class="sidebar-footer">
+            <p>Score General</p>
+            <div class="score-mini" id="score-mini"></div>
         
-    </div>
-
-    <div class="card">
-        <h3>Puntaje de categorias</h3>
-        <div class="chart-container">
-            <canvas id="radarChart"></canvas>
         </div>
+    </aside>
+
+    <main class="main-content">
         
-    </div>
+        <div id="skeleton-loader" class="skeleton-wrapper active">
+            
+            <div style="margin-bottom: 30px; border-bottom: 1px solid #2d3748; padding-bottom: 15px;">
+                <h2 style="color: #e9c46a; font-size: 2rem; margin-bottom: 5px;">Procesando Análisis GEO...</h2>
+                <p id="skeleton-text" style="color: #10b981; font-family: monospace; font-size: 1.1rem;">Conectando con la Red Neuronal...</p>
+            </div>
 
-    
-</div>
-<div id="resultado"></div>
-<div id="analisis-ia">
-
-    <div class="card">
-        <h3>Resumen Ejecutivo</h3>
-        <p id="resumen"></p>
-    </div>
-
-    <div class="graficos">
-
-        <div class="card">
-            <h3>Score General</h3>
-            <div class="score" id="score"></div>
-            <p id="veredicto"></p>
+            <div class="skeleton-header"></div>
+            <div class="skeleton-subtitle"></div>
+            <div class="skeleton-grid">
+                <div class="skeleton-card">
+                    <div class="skeleton-line title"></div>
+                    <div class="skeleton-line chart"></div>
+                </div>
+                <div class="skeleton-card">
+                    <div class="skeleton-line title"></div>
+                    <div class="skeleton-line chart"></div>
+                </div>
+                <div class="skeleton-card">
+                    <div class="skeleton-line title"></div>
+                    <div class="skeleton-line chart"></div>
+                </div>
+            </div>
         </div>
 
-        <div class="card">
-            <h3>Hallazgos</h3>
-            <ul id="hallazgos"></ul>
-        </div>
+        <section id="tab-metricas" class="tab-panel active">
+            <div class="header-section">
+                <h2>Inteligencia Competitiva y Posicionamiento de Marca</h2>
+                <p>Esta sección ofrece una radiografía precisa de dónde está parada tu empresa frente a sus principales 
+                    competidores. Al analizar el volumen de ruido que generás en el mercado (Visibilidad) y 
+                    cruzarlo con tu valoración cualitativa (Score IA), obtenemos una visión clara de tu posicionamiento 
+                    estratégico. Descubrí si tu marca lidera la conversación, si sos una 'joya oculta' con gran puntaje 
+                    pero poca exposición, o quiénes son tus verdaderos rivales a vencer.</p>
+            </div>
+            <div class="graficos">
+                
+                <div class="card">
+                    <h3>Visibilidad: Muestra el % de Menciones de tu marca en las busquedas relacionadas a tu negocio</h3>
+        
+                    <div class="chart-container"><canvas id="mencionesChart"></canvas></div>
+                </div>
+                <div class="card">
+                    <h3>Ranking de Recomendación: Es tu reputación pura frente al resto. En que posicion estas</h3>
+                    <div class="chart-container"><canvas id="rankingChart"></canvas></div>
+                    
+                </div>
+                <div class="card full-width">
+                    <h3>Mapa Competitivo: Visibilidad vs Ranking</h3>
+                    <div class="chart-container"><canvas id="scatterChart"></canvas></div>
+                </div>
+            </div>
+        </section>
 
-        <div class="card">
-            <h3>Fortalezas</h3>
-            <div id="fortalezas"></div>
-        </div>
+        <section id="tab-diagnostico" class="tab-panel">
+            <div class="header-section">
+                <h2>Diagnóstico de Percepción e Identidad</h2>
+                <p>Tu marca a traves de los ojos de los agentes de IA mas usados. Como te persiben, describen y entienden en el mundo
+                    digital y en comparacion con tu principal competidor detectado
+                </p>
+            </div>
+            <div class="graficos">
+                <div class="card">
+                    <h3>Puntaje de Categorías</h3>
+                    <div class="chart-container"><canvas id="radarChart"></canvas></div>
+                </div>
+                <div class="card">
+                    <h3>Comparación directa sobre tu Principal Competidor</h3>
+                    <div class="chart-container"><canvas id="comparacionChart"></canvas></div>
+                </div>
+                 <div class="card full-width" >
+                    <h3>Como te diferencias respecto a tu Principal Competidor</h3>
+                    <div class="chart-container"><canvas id="heatmapChart"></canvas></div>
+                </div>
+                
+                
+                </div>
+                <div id="resultado" class="mt-20"></div>
+        </section>
 
-        <div class="card">
-            <h3>Debilidades</h3>
-            <div id="debilidades"></div>
-        </div>
+        <section id="tab-resumen" class="tab-panel ">
+            <div class="header-section">
+                <h2>Resumen Ejecutivo</h2>
+                <p>Visión general del posicionamiento en Modelos de Lenguaje.</p>
+            </div>
+            <div class="grid-resumen">
+                <div class="card highlight-card">
+                    <h3>Score</h3>
+                    <div class="score" id="score"></div>
+                    <p id="veredicto" class="text-muted"></p>
+                </div>
+                <div class="card">
+                    <h3>Impacto Estimado (Tras optimización)</h3>
+                    <p id="impacto" style="font-size: 1.1rem; line-height: 1.8;"></p>
+                </div>
+            </div>
+            <div class="card mt-20">
+                <h3>Síntesis de la IA</h3>
+                <p id="resumen" style="font-size: 1.1rem; color: #d1d5db;"></p>
+            </div>
+            <div class="card mt-20">
+                <h3>Hallazgos Clave</h3>
+                <ul id="hallazgos" class="styled-list"></ul>
+            </div>
+                            <div class="card mt-20">
+                <h3>Análisis Estratégico vs <span id="competidor" style="color: #e9c46a;"></span></h3>
+                <div class="grid" style="margin-top: 15px;">
+                    <div>
+                        <p style="color: #10b981; font-weight: bold; margin-bottom: 10px;">Nuestras Ventajas</p>
+                        <ul id="ventajas" class="styled-list"></ul>
+                    </div>
+                    <div>
+                        <p style="color: #ef4444; font-weight: bold; margin-bottom: 10px;">Nuestras Desventajas</p>
+                        <ul id="desventajas" class="styled-list"></ul>
+                    </div>
+                </div>
+                <div style="margin-top: 20px; padding: 15px; background: rgba(243, 156, 126, 0.1); border-left: 4px solid #f39c7e; border-radius: 4px;">
+                    <strong style="color: #f39c7e;">Gap Principal: </strong><span id="gap" style="color: #f1f1f1;"></span>
+                </div>
+            </div>
+            </div>
+            <div class="grid mt-20">
+                <div class="card">
+                    <h3>Fortalezas Reconocidas</h3>
+                    <div id="fortalezas" class="tags-container"></div>
+                </div>
+                <div class="card">
+                    <h3>Debilidades Detectadas</h3>
+                    <div id="debilidades" class="tags-container"></div>
+                </div>
+            </div>
+            <div class="grid mt-20">
+                <div class="card border-warning">
+                    <h3 style="color: #f59e0b;">Riesgos de no actuar</h3>
+                    <ul id="riesgos" class="styled-list"></ul>
+                </div>
+                <div class="card border-success">
+                    <h3 style="color: #10b981;">Oportunidades de Growth</h3>
+                    <ul id="oportunidades" class="styled-list"></ul>
+                </div>
+            </div>
 
-        <div class="card">
-            <h3>Oportunidades</h3>
-            <ul id="oportunidades"></ul>
-        </div>
+        </section>
 
-        <div class="card">
-            <h3>Riesgos</h3>
-            <ul id="riesgos"></ul>
-        </div>
 
-        <div class="card">
-            <h3>Comparación</h3>
-            <p><strong id="competidor"></strong></p>
+        <section id="tab-plan" class="tab-panel">
+            <div class="header-section">
+                <h2>Plan de Acción</h2>
+                <p>Hoja de ruta generada automáticamente para manipular el entrenamiento de los LLMs.</p>
+            </div>
+            <div class="card">
+                <h3>Tareas Prioritarias</h3>
+                <div id="plan" class="plan-grid"></div>
+            </div>
+            <div class="grid mt-20">
+                <div class="card">
+                    <h3>Recomendaciones Inmediatas</h3>
+                    <ul id="rec-inmediatas" class="styled-list"></ul>
+                </div>
+                <div class="card">
+                    <h3>Estrategia a Corto Plazo</h3>
+                    <ul id="rec-corto" class="styled-list"></ul>
+                </div>
+                <div class="card">
+                    <h3>Estrategia a Mediano Plazo</h3>
+                    <ul id="rec-mediano" class="styled-list"></ul>
+                </div>
+            </div>
+            </div>
+            <div class="card mt-20">
+                <h3>Transparencia del Análisis</h3>
+                <div class="grid">
+                    <div>
+                        <p>Confianza Global</p>
+                        <div class="barra"><div id="confianza-bar"></div></div>
+                    </div>
+                    <div>
+                        <p>Cobertura Web</p>
+                        <div class="barra"><div id="cov-web"></div></div>
+                    </div>
+                    <div>
+                        <p>Cobertura Menciones</p>
+                        <div class="barra"><div id="cov-men"></div></div>
+                    </div>
+                    <div>
+                        <p>Cobertura de fuentes ranking</p>
+                        <div class="barra"><div id="cov-rank"></div></div>
+                    </div>
+                    <div>
+                        <p>Cobertura de fuentes preguntas</p>
+                        <div class="barra"><div id="cov-pre"></div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-            <p>Ventajas</p>
-            <ul id="ventajas"></ul>
+    </main>
 
-            <p>Desventajas</p>
-            <ul id="desventajas"></ul>
-
-            <p id="gap"></p>
-        </div>
-
-        <div class="card">
-            <h3>Recomendaciones</h3>
-
-            <p><strong>Inmediatas</strong></p>
-            <ul id="rec-inmediatas"></ul>
-
-            <p><strong>Corto plazo</strong></p>
-            <ul id="rec-corto"></ul>
-
-            <p><strong>Mediano plazo</strong></p>
-            <ul id="rec-mediano"></ul>
-        </div>
-
-        <div class="card">
-            <h3>Plan de acción</h3>
-            <div id="plan"></div>
-        </div>
-
-        <div class="card">
-            <h3>Confianza del análisis</h3>
-            <div class="barra"><div id="confianza-bar"></div></div>
-        </div>
-
-        <div class="card">
-            <h3>Cobertura</h3>
-
-            <p>Website</p>
-            <div class="barra"><div id="cov-web"></div></div>
-
-            <p>Menciones</p>
-            <div class="barra"><div id="cov-men"></div></div>
-
-            <p>Ranking</p>
-            <div class="barra"><div id="cov-rank"></div></div>
-
-            <p>Preguntas</p>
-            <div class="barra"><div id="cov-pre"></div></div>
-        </div>
-
-        <div class="card">
-            <h3>Impacto estimado</h3>
-            <p id="impacto"></p>
-        </div>
-
-    </div>
-
-</div>
-<button>Realizar comparacion directa con competidores</button>
 </body>
 </html>
-
