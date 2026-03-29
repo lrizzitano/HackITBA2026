@@ -59,7 +59,7 @@ body {
 /* LAYOUT DE TARJETAS Y GRILLAS */
 .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
 .grid-resumen { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
-.graficos { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 20px; }
+.graficos { display: grid; grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); gap: 20px; }
 .full-width { grid-column: 1 / -1; }
 .mt-20 { margin-top: 20px; }
 
@@ -68,9 +68,12 @@ body {
     padding: 25px;
     border-radius: 8px;
     border: 1px solid #2d3748;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }
 .highlight-card { border-color: #e9c46a; text-align: center; }
-.card h3 { margin-bottom: 15px; color: #f39c7e; font-size: 1.2rem; }
+.card h3 { margin-bottom: 15px; color: #f39c7e; font-size: 1.2rem; text-align: center;}
 .border-warning { border-top: 3px solid #f59e0b; }
 .border-success { border-top: 3px solid #10b981; }
 
@@ -127,3 +130,67 @@ body {
     font-weight: bold;
     color: #f39c7e;
 }
+
+/* ========================================= */
+/* SKELETON LOADER (Transición de Pestañas)  */
+/* ========================================= */
+
+.skeleton-wrapper {
+    display: none; /* Oculto por defecto */
+    width: 100%;
+    animation: fadeIn 0.3s ease-out;
+}
+.skeleton-wrapper.active {
+    display: block; /* Se muestra por JS */
+}
+
+/* Animación de latido */
+@keyframes pulse {
+    0% { opacity: 0.7; }
+    50% { opacity: 0.3; }
+    100% { opacity: 0.7; }
+}
+
+.skeleton-header {
+    width: 35%;
+    height: 35px;
+    background: #2d3748; /* Gris oscuro Reconocia */
+    border-radius: 6px;
+    margin-bottom: 15px;
+    animation: pulse 1.5s infinite ease-in-out;
+}
+
+.skeleton-subtitle {
+    width: 55%;
+    height: 18px;
+    background: #2d3748;
+    border-radius: 4px;
+    margin-bottom: 40px;
+    animation: pulse 1.5s infinite ease-in-out;
+}
+
+.skeleton-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.skeleton-card {
+    background: #1c242c;
+    height: 320px;
+    border-radius: 8px;
+    border: 1px solid #2d3748;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.skeleton-line {
+    background: #2d3748;
+    border-radius: 4px;
+    animation: pulse 1.5s infinite ease-in-out;
+}
+
+.skeleton-line.title { width: 40%; height: 24px; }
+.skeleton-line.chart { width: 100%; flex: 1; border-radius: 8px; }

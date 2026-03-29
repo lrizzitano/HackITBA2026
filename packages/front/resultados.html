@@ -14,42 +14,65 @@
         <div class="logo">Reconoc<span>ia</span></div>
         <ul class="nav-tabs">
             
-            <li class="tab-btn" data-target="tab-metricas">1. Inteligencia Competitiva</li>
+            <li class="tab-btn active" data-target="tab-metricas">1. Inteligencia Competitiva</li>
             <li class="tab-btn" data-target="tab-diagnostico">2. Diagnóstico IA</li>
-            <li class="tab-btn active" data-target="tab-resumen">3. Resumen Ejecutivo</li>
+            <li class="tab-btn" data-target="tab-resumen">3. Resumen Ejecutivo</li>
             <li class="tab-btn" data-target="tab-plan">4. Plan de Acción</li>
         </ul>
         <div class="sidebar-footer">
             <p>Score General</p>
             <div class="score-mini" id="score-mini"></div>
-            
-            <p class="score-title mt-10">Impacto Estimado</p>
-            <div id="impacto-sidebar" class="impacto-list">
-                <div class="impacto-item">📈 Visibilidad: <span class="impacto-value">92</span></div>
-                <div class="impacto-item">🏆 Ranking: <span class="impacto-value">5</span></div>
-                <div class="impacto-item">💰 Conversión: <span class="impacto-value">76</span></div>
-            </div>
+        
         </div>
     </aside>
 
     <main class="main-content">
         
+        <div id="skeleton-loader" class="skeleton-wrapper active">
+            
+            <div style="margin-bottom: 30px; border-bottom: 1px solid #2d3748; padding-bottom: 15px;">
+                <h2 style="color: #e9c46a; font-size: 2rem; margin-bottom: 5px;">Procesando Análisis GEO...</h2>
+                <p id="skeleton-text" style="color: #10b981; font-family: monospace; font-size: 1.1rem;">Conectando con la Red Neuronal...</p>
+            </div>
 
+            <div class="skeleton-header"></div>
+            <div class="skeleton-subtitle"></div>
+            <div class="skeleton-grid">
+                <div class="skeleton-card">
+                    <div class="skeleton-line title"></div>
+                    <div class="skeleton-line chart"></div>
+                </div>
+                <div class="skeleton-card">
+                    <div class="skeleton-line title"></div>
+                    <div class="skeleton-line chart"></div>
+                </div>
+                <div class="skeleton-card">
+                    <div class="skeleton-line title"></div>
+                    <div class="skeleton-line chart"></div>
+                </div>
+            </div>
+        </div>
 
-        <section id="tab-metricas" class="tab-panel">
+        <section id="tab-metricas" class="tab-panel active">
             <div class="header-section">
-                <h2>Inteligencia Competitiva</h2>
-                <p>Comparativa de Share of Voice y Rankings contra competidores directos.</p>
+                <h2>Inteligencia Competitiva y Posicionamiento de Marca</h2>
+                <p>Esta sección ofrece una radiografía precisa de dónde está parada tu empresa frente a sus principales 
+                    competidores. Al analizar el volumen de ruido que generás en el mercado (Visibilidad) y 
+                    cruzarlo con tu valoración cualitativa (Score IA), obtenemos una visión clara de tu posicionamiento 
+                    estratégico. Descubrí si tu marca lidera la conversación, si sos una 'joya oculta' con gran puntaje 
+                    pero poca exposición, o quiénes son tus verdaderos rivales a vencer.</p>
             </div>
             <div class="graficos">
+                
                 <div class="card">
-                    <h3>Visibilidad (% de Menciones)</h3>
+                    <h3>Visibilidad: Muestra el % de Menciones de tu marca en las busquedas relacionadas a tu negocio</h3>
+        
                     <div class="chart-container"><canvas id="mencionesChart"></canvas></div>
                 </div>
                 <div class="card">
-                    <h3>Ranking de Recomendación</h3>
+                    <h3>Ranking de Recomendación: Es tu reputación pura frente al resto. En que posicion estas</h3>
                     <div class="chart-container"><canvas id="rankingChart"></canvas></div>
-                    <div class="preguntas-ranking mt-20"></div>
+                    
                 </div>
                 <div class="card full-width">
                     <h3>Mapa Competitivo: Visibilidad vs Ranking</h3>
@@ -60,8 +83,10 @@
 
         <section id="tab-diagnostico" class="tab-panel">
             <div class="header-section">
-                <h2>Diagnóstico de Percepción</h2>
-                <p>Cómo interpretan las IAs los atributos cualitativos de la marca.</p>
+                <h2>Diagnóstico de Percepción e Identidad</h2>
+                <p>Tu marca a traves de los ojos de los agentes de IA mas usados. Como te persiben, describen y entienden en el mundo
+                    digital y en comparacion con tu principal competidor detectado
+                </p>
             </div>
             <div class="graficos">
                 <div class="card">
@@ -69,11 +94,11 @@
                     <div class="chart-container"><canvas id="radarChart"></canvas></div>
                 </div>
                 <div class="card">
-                    <h3>Comparación vs Principal Competidor</h3>
+                    <h3>Comparación directa sobre tu Principal Competidor</h3>
                     <div class="chart-container"><canvas id="comparacionChart"></canvas></div>
                 </div>
-                 <div class="card">
-                    <h3>Evaluacion de</h3>
+                 <div class="card full-width" >
+                    <h3>Como te diferencias respecto a tu Principal Competidor</h3>
                     <div class="chart-container"><canvas id="heatmapChart"></canvas></div>
                 </div>
                 
@@ -82,7 +107,7 @@
                 <div id="resultado" class="mt-20"></div>
         </section>
 
-        <section id="tab-resumen" class="tab-panel active">
+        <section id="tab-resumen" class="tab-panel ">
             <div class="header-section">
                 <h2>Resumen Ejecutivo</h2>
                 <p>Visión general del posicionamiento en Modelos de Lenguaje.</p>
