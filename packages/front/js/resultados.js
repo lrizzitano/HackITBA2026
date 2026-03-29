@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     problemas: "Falta de presencia digital consistente",
 
-    servicios: ["Desarrollo web", "Marketing digital", "Consultoría"],
+    servicios: ["Desarrollo web", "Marketing digital", "Consultoría","pizzas"],
 
     menciones_competencia: [
         { nombre: "Mi Empresa", porcentaje: 21 },
@@ -62,12 +62,17 @@ document.addEventListener("DOMContentLoaded", () => {
         },
 
     percepcion_scores: {
-        calidad: 8,
-        confianza: 7,
-        riesgo_e_incertidumbre: 3,
-        atencion_al_cliente: 7,
-        nivel_servicio: 6,
-        presencia_en_la_web: 10
+  "percepcion": 5,
+  "confianza": 10,
+  "Relacion calidad precio": 3,
+  "popularidad": 6,
+  "diferenciacion": 8,
+  "innovacion": 4,
+  "propuesta de valor": 8,
+  "publico objetivo": 4,
+  "aspiracion": 1,
+  "riesgo": 1
+
     },
 
     // =======================
@@ -75,12 +80,17 @@ document.addEventListener("DOMContentLoaded", () => {
     // =======================
     principal_competidor:"Empresa C",
     percepcion_scores_competidor: {
-        calidad: 7,
-        confianza: 6,
-        riesgo_e_incertidumbre: 6,
-        atencion_al_cliente: 8,
-        nivel_servicio: 5,
-        presencia_en_la_web: 9
+  "percepcion": 9,
+  "confianza": 10,
+  "Relacion calidad precio": 6,
+  "popularidad": 7,
+  "diferenciacion": 5,
+  "innovacion": 7,
+  "propuesta de valor": 10,
+  "publico objetivo": 9,
+  "aspiracion": 2,
+  "riesgo": 3
+
     },
 
     conclusionJuez:{
@@ -447,28 +457,59 @@ new Chart(document.getElementById('scatterChart'), {
 // RADAR - PERCEPCIÓN COMPLETA
 // =======================
 
-new Chart(document.getElementById('radarChart'), {
+new Chart(document.getElementById('comparacionChart'), {
     type: 'radar',
     data: {
         labels: [
-            'Calidad',
-            'Confianza',
-            'Riesgo e Incertidumbre',
-            'Atención al cliente',
-            'Nivel de servicio',
-            'Presencia en la web'
+            "Percepción",
+            "Confianza",
+            "Relación calidad-precio",
+            "Popularidad",
+            "Diferenciación",
+            "Innovación",
+            "Propuesta de valor",
+            "Público objetivo",
+            "Aspiración",
+            "Riesgo"
         ],
         datasets: [
             {
-                label: data.marca,
+                label: data.marca, // Tu marca
                 data: [
-                    data.percepcion_scores.calidad,
+                    data.percepcion_scores.percepcion,
                     data.percepcion_scores.confianza,
-                    data.percepcion_scores.riesgo_e_incertidumbre,
-                    data.percepcion_scores.atencion_al_cliente,
-                    data.percepcion_scores.nivel_servicio,
-                    data.percepcion_scores.presencia_en_la_web
-                ]
+                    data.percepcion_scores["Relacion calidad precio"],
+                    data.percepcion_scores.popularidad,
+                    data.percepcion_scores.diferenciacion,
+                    data.percepcion_scores.innovacion,
+                    data.percepcion_scores["propuesta de valor"],
+                    data.percepcion_scores["publico objetivo"],
+                    data.percepcion_scores.aspiracion,
+                    data.percepcion_scores.riesgo
+                ],
+                backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                borderColor: 'rgba(59, 130, 246, 1)',
+                borderWidth: 2,
+                pointBackgroundColor: 'rgba(59, 130, 246, 1)'
+            },
+            {
+                label: data.principal_competidor, // Competidor
+                data: [
+                    data.percepcion_scores_competidor.percepcion,
+                    data.percepcion_scores_competidor.confianza,
+                    data.percepcion_scores_competidor["Relacion calidad precio"],
+                    data.percepcion_scores_competidor.popularidad,
+                    data.percepcion_scores_competidor.diferenciacion,
+                    data.percepcion_scores_competidor.innovacion,
+                    data.percepcion_scores_competidor["propuesta de valor"],
+                    data.percepcion_scores_competidor["publico objetivo"],
+                    data.percepcion_scores_competidor.aspiracion,
+                    data.percepcion_scores_competidor.riesgo
+                ],
+                backgroundColor: 'rgba(220, 38, 38, 0.2)',
+                borderColor: 'rgba(220, 38, 38, 1)',
+                borderWidth: 2,
+                pointBackgroundColor: 'rgba(220, 38, 38, 1)'
             }
         ]
     },
@@ -542,128 +583,87 @@ contenedor.innerHTML = `
 
 //COMPARACION DE PERCEPCION CON COMPETIDOR DIRECTO
 
-// =======================
-// DUMBBELL CHART (PRO)
-// =======================
-
-const categorias = [
-    'Calidad',
-    'Confianza',
-    'Riesgo',
-    'Atención',
-    'Servicio',
-    'Presencia Web'
-];
-
-const keys = [
-    "calidad",
-    "confianza",
-    "riesgo_e_incertidumbre",
-    "atencion_al_cliente",
-    "nivel_servicio",
-    "presencia_en_la_web"
-];
-
-// dataset para líneas (la "barra" entre puntos)
-const lineData = categorias.map((cat, i) => ({
-    x: data.percepcion_scores[keys[i]],
-    x2: data.percepcion_scores_competidor[keys[i]],
-    y: cat
-}));
-
-// puntos TU MARCA
-const puntosMiMarca = categorias.map((cat, i) => ({
-    x: data.percepcion_scores[keys[i]],
-    y: cat
-}));
-
-// puntos COMPETIDOR
-const puntosCompetidor = categorias.map((cat, i) => ({
-    x: data.percepcion_scores_competidor[keys[i]],
-    y: cat
-}));
-
-new Chart(document.getElementById('comparacionChart'), {
-    type: 'bar',
+new Chart(document.getElementById('radarChart'), {
+    type: 'radar',
     data: {
-        labels: categorias,
+        labels: [
+            "Percepción",
+            "Confianza",
+            "Relación calidad-precio",
+            "Popularidad",
+            "Diferenciación",
+            "Innovación",
+            "Propuesta de valor",
+            "Público objetivo",
+            "Aspiración",
+            "Riesgo"
+        ],
         datasets: [
-            // línea (simulada con floating bars)
             {
-                label: 'Diferencia',
-                data: categorias.map((_, i) => [
-                    Math.min(
-                        data.percepcion_scores[keys[i]],
-                        data.percepcion_scores_competidor[keys[i]]
-                    ),
-                    Math.max(
-                        data.percepcion_scores[keys[i]],
-                        data.percepcion_scores_competidor[keys[i]]
-                    )
-                ]),
-                backgroundColor: '#c9a85b',
-                borderSkipped: false,
-                barThickness: 6
-            },
-            // punto TU EMPRESA
-            {
-                type: 'scatter',
-                label: data.marca,
-                data: puntosMiMarca,
-                pointRadius: 6
-            },
-            // punto COMPETIDOR
-            {
-                type: 'scatter',
-                label: data.principal_competidor,
-                data: puntosCompetidor,
-                pointRadius: 6
+                label: data.marca, // Tu marca
+                data: [
+                    data.percepcion_scores.percepcion,
+                    data.percepcion_scores.confianza,
+                    data.percepcion_scores["Relacion calidad precio"],
+                    data.percepcion_scores.popularidad,
+                    data.percepcion_scores.diferenciacion,
+                    data.percepcion_scores.innovacion,
+                    data.percepcion_scores["propuesta de valor"],
+                    data.percepcion_scores["publico objetivo"],
+                    data.percepcion_scores.aspiracion,
+                    data.percepcion_scores.riesgo
+                ],
+                backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                borderColor: 'rgba(59, 130, 246, 1)',
+                borderWidth: 2,
+                pointBackgroundColor: 'rgba(59, 130, 246, 1)'
             }
         ]
     },
     options: {
-        indexAxis: 'y',
         responsive: true,
         maintainAspectRatio: false,
-
-        plugins: {
-            title: {
-                display: true,
-                text: `Comparación vs ${data.principal_competidor}`
-            }
-        },
-
         scales: {
-            x: {
+            r: {
                 min: 0,
-                max: 10
+                max: 10,
+                ticks: {
+                    stepSize: 2
+                }
             }
         }
     }
-});
-
-// =======================
+});// =======================
 // HEATMAP DE GAPS
 // =======================
 
 const categoriasHeat = [
-    "calidad",
+    "percepcion",
     "confianza",
-    "riesgo_e_incertidumbre",
-    "atencion_al_cliente",
-    "nivel_servicio",
-    "presencia_en_la_web"
+    "Relacion calidad precio",
+    "popularidad",
+    "diferenciacion",
+    "innovacion",
+    "propuesta de valor",
+    "publico objetivo",
+    "aspiracion",
+    "riesgo"
 ];
 
 const labelsHeat = [
-    "Calidad",
+    "Percepción",
     "Confianza",
-    "Riesgo",
-    "Atención",
-    "Servicio",
-    "Web"
+    "Relación calidad-precio",
+    "Popularidad",
+    "Diferenciación",
+    "Innovación",
+    "Propuesta de valor",
+    "Público objetivo",
+    "Aspiración",
+    "Riesgo"
 ];
 
+// Calculamos gaps contra competidor
 const gaps = categoriasHeat.map(k =>
     data.percepcion_scores[k] - data.percepcion_scores_competidor[k]
 );
@@ -676,7 +676,7 @@ new Chart(document.getElementById('heatmapChart'), {
             label: 'Gap vs competidor',
             data: gaps,
             backgroundColor: gaps.map(v =>
-                v > 0 ? '#22c55e' : '#ef4444'
+                v > 0 ? '#22c55e' : '#ef4444' // verde si ganás, rojo si perdés
             )
         }]
     },
