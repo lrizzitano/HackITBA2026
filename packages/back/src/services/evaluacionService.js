@@ -7,7 +7,7 @@ import { generar } from './geminiService.js';
 //import { generar } from './tavilyService.js';
 
 
-export async function evaluarMarca({ nombre, rubro, ubicacion, relacionCalidadPrecio }) {
+export async function evaluarMarca({ nombre, rubro, ubicacion, relacionCalidadPrecio, urlPagina }) {
   const KPIs = await evaluarKPIs(rubro, ubicacion, relacionCalidadPrecio);
 
   const ranks = await evaluarRanks(nombre, rubro, ubicacion);
