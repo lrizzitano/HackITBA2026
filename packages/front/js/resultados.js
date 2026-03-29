@@ -58,6 +58,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     
 
     // ESTOS SON LOS DATOS EXACTOS DE TU COMPAÑERO COMO RESPALDO (Plan B)
+    /*
         const fallbackData = {
         marca: datosEnviados.marca || "Mi Empresa",
         rubro: "ropa",
@@ -127,11 +128,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             impacto_estimado: { visibilidad: "+35%", ranking: "+20 posiciones", conversion: "+15%" }
         }
     };
-
+*/
     try {
         // 🔥 ATENCIÓN: Esta línea fuerza el modo prueba (Skeleton -> Gráficos sin backend)
         // BORREN O COMENTEN ESTA LÍNEA MAÑANA CUANDO EL BACKEND ESTÉ ANDANDO.
-        throw new Error("Modo de prueba activado (Sin Backend)");
+        //throw new Error("Modo de prueba activado (Sin Backend)");
         console.log(datosEnviados);
 
         const urlDelBackend = 'http://localhost:8000/evaluacion';
@@ -466,7 +467,7 @@ function renderizarDashboard(data) {
     }
 
     if(d.impacto_estimado) {
-        setHtml("impacto", `📈 Visibilidad: ${d.impacto_estimado.visibilidad} <br>🏆 Ranking: ${d.impacto_estimado.ranking} <br>💰 Conversión: ${d.impacto_estimado.conversion}`);
+        setHtml("impacto", ` Visibilidad: ${d.impacto_estimado.visibilidad} <br> Ranking: ${d.impacto_estimado.ranking} <br> Conversión: ${d.impacto_estimado.conversion}`);
         setHtml("impacto-sidebar", `Visibilidad: ${d.impacto_estimado.visibilidad} <br>Ranking: ${d.impacto_estimado.ranking} <br>Conversión: ${d.impacto_estimado.conversion}`);
     }
 }

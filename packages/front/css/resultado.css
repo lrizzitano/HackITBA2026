@@ -18,7 +18,17 @@ body {
     flex-direction: column;
     padding: 30px 0;
 }
-.logo { font-size: 24px; font-weight: bold; letter-spacing: 2px; color: #f1f1f1; padding: 0 30px; margin-bottom: 40px; }
+.logo { font-size: 24px; font-weight: bold; letter-spacing: 2px; color: #f1f1f1; padding: 0 30px; margin-bottom: 40px; text-decoration: none; /* 🔥 Esto elimina el subrayado */
+    display: inline-block; /* Buena práctica para que el padding/margin funcione perfecto en un <a> */
+}
+
+/* 🛡️ Bloqueamos cualquier cambio de color automático del navegador */
+.logo:visited, 
+.logo:hover, 
+.logo:active {
+    color: #f1f1f1; /* Mantenemos tu color original */
+    text-decoration: none; 
+}
 .logo span { color: #f39c7e; }
 
 .nav-tabs { list-style: none; display: flex; flex-direction: column; gap: 5px; }
