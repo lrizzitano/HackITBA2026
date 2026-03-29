@@ -56,10 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { nombre: "Empresa D", score: 40 },
         { nombre: "Empresa E", score: 30 }
     ],
-        preguntas: {
-            pregunta_bien_rankeado: "Quiero conocer las 10 mejores marcas en el rubro",
-            pregunta_sin_aparicion: "Quiero conocer las 10 mejores marcas en el rubro que tengan mejores recomendaciones"
-        },
+
 
     percepcion_scores: {
   "percepcion": 5,
@@ -285,7 +282,7 @@ new Chart(canvas, {
             // Te agregué el título con el mismo formato para mantener consistencia
             title: {
                 display: true,
-                text: 'Porcentaje de Menciones por Marca',
+                
                 color: '#ffffff',
                 font: {
                     size: 20,
@@ -332,20 +329,6 @@ new Chart(canvas, {
 // =======================
 // RANKING POR SCORE (EMPRESAS)
 // =======================
-
-const contenedorPreguntas = document.querySelector('.preguntas-ranking');
-
-contenedorPreguntas.innerHTML = `
-    <div class="pregunta-card ok">
-        <span class="badge">✔ Aparecés muy bien rankeado</span>
-        <p>${data.preguntas.pregunta_bien_rankeado}</p>
-    </div>
-
-    <div class="pregunta-card bad">
-        <span class="badge">✖ No aparecés nunca </span>
-        <p>${data.preguntas.pregunta_sin_aparicion}</p>
-    </div>
-`;
 
 
 // 1. Ordenar de mayor a menor score
@@ -400,7 +383,7 @@ new Chart(document.getElementById('rankingChart'), {
         plugins: {
             title: {
                 display: true,
-                text: 'Ranking de empresas (Score IA)',
+              
                 color: '#ffffff',
                 font: {
                     size: 20,
@@ -493,7 +476,7 @@ new Chart(document.getElementById('scatterChart'), {
             // 1. MEJORA DEL TÍTULO
             title: {
                 display: true,
-                text: 'Mapa Competitivo: Visibilidad vs Ranking',
+                
                 color: '#ffffff', // Título en blanco puro
                 font: {
                     size: 20,     // Mismo tamaño que los demás gráficos
@@ -537,7 +520,7 @@ new Chart(document.getElementById('scatterChart'), {
                 // 4. MEJORA DE TÍTULOS Y NÚMEROS DEL EJE X
                 title: {
                     display: true,
-                    text: '% Menciones (Visibilidad)',
+                    
                     color: '#94a3b8', // Título del eje en un gris intermedio
                     font: { size: 14, weight: 'bold' },
                     padding: { top: 10 }
@@ -559,7 +542,7 @@ new Chart(document.getElementById('scatterChart'), {
                 // 5. MEJORA DE TÍTULOS Y NÚMEROS DEL EJE Y
                 title: {
                     display: true,
-                    text: 'Score Ranking',
+                    
                     color: '#94a3b8', // Título del eje en un gris intermedio
                     font: { size: 14, weight: 'bold' },
                     padding: { bottom: 10 }
@@ -695,7 +678,10 @@ new Chart(document.getElementById('comparacionChart'), {
 const contenedor = document.getElementById("resultado");
 
 contenedor.innerHTML = `
-    <h2>${data.marca}</h2>
+    <h2 style="text-align: center; padding: 1px;"><span style="color:#e9c46a;"> ${data.marca} </span>A traves de los ojos de la IA</h2>
+    <p style="margin: 5px;">Así es como los motores de Inteligencia Artificial entienden y catalogan a tu empresa actualmente. 
+    Revisá qué adjetivos asocian con tu nombre, qué problemas creen que resolvés y contra quiénes te están
+     comparando orgánicamente<p>
 
     <div class="grid">
 
@@ -858,13 +844,16 @@ new Chart(document.getElementById('heatmapChart'), {
             {
                 label: 'Mi Empresa',
                 data: scoresMios,
-                // Mantenemos tus colores originales para las barras
-                backgroundColor: '#2e7245' // Verde
+                backgroundColor: '#2e7245', // Verde
+                categoryPercentage: 0.5, // <--- REDUCE EL ANCHO DEL GRUPO (Por defecto es 0.8). Baja este número para más espacio entre pares.
+                barPercentage: 0.9       // <--- (Opcional) Controla el grosor de la barra individual. 1.0 es el máximo.
             },
             {
                 label: 'Competidor',
                 data: scoresCompetidor,
-                backgroundColor: '#9ca3af' // Gris
+                backgroundColor: '#9ca3af', // Gris
+                categoryPercentage: 0.5, // <--- DEBE SER IGUAL AL DE ARRIBA
+                barPercentage: 0.9       // <--- DEBE SER IGUAL AL DE ARRIBA
             }
         ]
     },
@@ -877,7 +866,6 @@ new Chart(document.getElementById('heatmapChart'), {
             // 1. MEJORA DE TÍTULO
             title: {
                 display: true,
-                text: 'Mi Empresa vs Competidor por Categoría',
                 color: '#ffffff', // Título en blanco puro
                 font: {
                     size: 20, // Título más grande
@@ -888,7 +876,7 @@ new Chart(document.getElementById('heatmapChart'), {
             // 2. MEJORA DE LA LEYENDA (Los cuadraditos superiores)
             legend: {
                 labels: {
-                    color: '#e2e8f0', // Texto de leyenda claro (gris clarito)
+                    color: '#e2f0e4', // Texto de leyenda claro (gris clarito)
                     font: {
                         size: 16 // Leyenda más grande
                     }
@@ -920,7 +908,7 @@ new Chart(document.getElementById('heatmapChart'), {
                 
                 // 5. MEJORA DE LAS ETIQUETAS DE TEXTO
                 ticks: {
-                    color: '#e2e8f0', // Texto de categorías claro (gris clarito)
+                    color: '#e9c46a', // Texto de categorías claro (gris clarito)
                     font: {
                         size: 14 // Categorías más grandes
                     }
