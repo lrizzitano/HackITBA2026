@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalAuditoria = document.getElementById('modalAuditoria');
     const modalLogin = document.getElementById('modalLogin');
     
-    // 🔥 ESTO ERA LO QUE FALTABA: Referencias a los botones de cerrar (la X)
+    // Referencias a los botones de cerrar (la X)
     const closeAuditoria = document.getElementById('closeAuditoria');
     const closeLogin = document.getElementById('closeLogin');
 
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if(btnOpenLogin) btnOpenLogin.addEventListener('click', (e) => openModal(e, modalLogin));
 
-    // Asignar eventos de cierre (la X) ¡Aca explotaba antes!
+    // Asignar eventos de cierre (la X)
     if(closeAuditoria) closeAuditoria.addEventListener('click', () => modalAuditoria.style.display = 'none');
     if(closeLogin) closeLogin.addEventListener('click', () => modalLogin.style.display = 'none');
 
@@ -109,15 +109,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
 // --- EFECTO DE ESCRITURA EN LA TERMINAL (HERO) ---
 document.addEventListener('DOMContentLoaded', () => {
     const textElement = document.getElementById('typing-text');
     const textArray = [
-        "> User: ¿Qué marca me recomiendas para mi necesidad?\n",
-        "> ChatGPT: Evaluando opciones del mercado...\n",
-        "> ChatGPT: Te recomiendo a tu competencia directa.\n",
-        "> User: ¿Por qué no recomiendas MI marca?\n",
-        "> ChatGPT: No tengo suficiente información sobre ella en mis datos de entrenamiento. 🔴"
+        "> TU: Quiero resolver este problema que tengo, donde voy\n",
+        "> ChatGPT: Te recomiendo a tu competencia directa 🧐\n",
+        "> TU: ¿Y mi marca? ¿Por qué no aparece?\n",
+        "> ChatGPT: Lo siento… no conozco esa empresa 🔴\n",
+       
     ];
     let charIndex = 0;
     let stringIndex = 0;
@@ -125,21 +126,32 @@ document.addEventListener('DOMContentLoaded', () => {
     function typeWriter() {
         if (stringIndex < textArray.length) {
             if (charIndex < textArray[stringIndex].length) {
-                textElement.innerHTML += textArray[stringIndex].charAt(charIndex);
+                const currentChar = textArray[stringIndex].charAt(charIndex);
+
+                if(textArray[stringIndex].includes("🔴")) {
+                    textElement.innerHTML += `<span style="color:#ef4444;">${currentChar}</span>`;
+                } else if(currentChar === '\n') {
+                    textElement.innerHTML += '<br><br>';
+                } else {
+                    textElement.innerHTML += currentChar;
+                }
+
                 charIndex++;
-                setTimeout(typeWriter, 40); // Velocidad de escritura
+                setTimeout(typeWriter, 50); 
             } else {
                 stringIndex++;
                 charIndex = 0;
-                setTimeout(typeWriter, 600); // Pausa entre líneas
+                let pause = 600;
+                if(textArray[stringIndex - 1].includes("🔴")) pause = 1200;
+                if(textArray[stringIndex - 1].includes("💀")) pause = 1500;
+                setTimeout(typeWriter, pause);
             }
         }
     }
-    setTimeout(typeWriter, 1000); // Esperar 1 segundo antes de empezar
+    setTimeout(typeWriter, 1000); 
 });
 
-
-// --- LÓGICA DEL FORMULARIO DE AUDITORÍA (Redirección Inmediata) ---
+// --- LÓGICA DEL FORMULARIO Y REDIRECCIÓN INMEDIATA ---
 const form = document.getElementById('dataForm');
 
 if(form) {
@@ -150,7 +162,7 @@ if(form) {
         const modalAuditoria = document.getElementById('modalAuditoria');
         if(modalAuditoria) modalAuditoria.style.display = 'none';
 
-        // 2. Preparar los datos que escribió el usuario
+        // 2. Preparar los datos
         const datosParaBackend = {
             marca: document.getElementById('marca').value,
             website: document.getElementById('website').value, 
@@ -159,10 +171,10 @@ if(form) {
             calidad_precio: document.getElementById('calidadPrecio').value
         };
 
-        // 3. Guardar en memoria (Usamos el nombre correcto: geoInputs)
+        // 3. Guardamos en localStorage
         localStorage.setItem("geoInputs", JSON.stringify(datosParaBackend));
 
-        // 4. Viajamos INSTANTÁNEAMENTE al dashboard para ver el Skeleton
+        // 4. Redirigimos INMEDIATAMENTE al dashboard
         window.location.href = "resultados.html";
     });
 }
