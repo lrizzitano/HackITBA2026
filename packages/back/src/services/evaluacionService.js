@@ -18,7 +18,7 @@ export async function evaluarMarca({ nombre, rubro, ubicacion, relacionCalidadPr
 
   const percepcion_competidor = await evaluarRanks(competidor, rubro, ubicacion);
 
-  const resultado = {
+  let resultado = {
     marca: nombre,
     rubro: rubro,
     ubicacion: ubicacion,
@@ -28,6 +28,13 @@ export async function evaluarMarca({ nombre, rubro, ubicacion, relacionCalidadPr
     ...percepcion,
     kpis_empresas : KPIs,
     percepcion_scores : ranks
+  }
+
+  const juez = await llamarAlJuez('https://api.judge.dev/evaluar', resultado);
+
+  resultado = {
+    ...resultado,
+    conclusionJuez: juez.conclusionJuez
   }
 
   console.log("Resultado final:", resultado);
@@ -419,4 +426,13 @@ async function llamarAlJuez(url, data) {
   posicionamiento: promedio de posicion en respuestas de a 10 marcas
   ${data}
   ```
+
+  const respuesta = await generar(systemPrompt);
+
+  try {
+    return parsearJSON(respuesta);
+  } catch (error) {
+    console.error("Error al parsear la respuesta del juez:", error);
+    throw new Error('Respuesta inválida del juez');
+  }
 }
