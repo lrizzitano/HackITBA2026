@@ -265,8 +265,6 @@ const ordenadoMenciones = [...data.menciones_competencia]
 const colores = ordenadoMenciones.map(e =>
     e.nombre === data.marca ? '#22c55e' : '#64748b'
 );
-
-// Crear gráfico
 new Chart(canvas, {
     type: 'bar',
     data: {
@@ -274,26 +272,60 @@ new Chart(canvas, {
         datasets: [{
             label: '% de menciones',
             data: ordenadoMenciones.map(e => e.porcentaje),
-            backgroundColor: colores
+            backgroundColor: colores,
+            borderRadius: 6 // Mantiene el estilo redondeado y moderno
         }]
     },
     options: {
-        indexAxis: 'y',
+        indexAxis: 'y', // <--- Barras horizontales
         responsive: true,
         maintainAspectRatio: false,
 
-        scales: {
-            x: {
-                beginAtZero: true,
-                max: 100,
-                ticks: {
-                    callback: (value) => value + "%"
-                }
+        plugins: {
+            // Te agregué el título con el mismo formato para mantener consistencia
+            title: {
+                display: true,
+                text: 'Porcentaje de Menciones por Marca',
+                color: '#ffffff',
+                font: {
+                    size: 20,
+                    weight: 'bold'
+                },
+                padding: { bottom: 20 }
+            },
+            legend: { 
+                display: false // Oculto, ya que los colores hablan por sí solos
             }
         },
 
-        plugins: {
-            legend: { display: false }
+        scales: {
+            x: { // <--- EJE X (Los números con %)
+                beginAtZero: true,
+                max: 100,
+                ticks: {
+                    callback: (value) => value + "%", // Tu función original (¡muy buena!)
+                    color: '#ffffff', // Números en blanco
+                    font: {
+                        size: 14,
+                        weight: 'bold' // Negrita para destacar el %
+                    }
+                },
+                grid: {
+                    color: 'rgba(255, 255, 255, 0.15)', // Líneas verticales sutiles de guía
+                    tickColor: 'transparent'
+                }
+            },
+            y: { // <--- EJE Y (Los nombres de las empresas)
+                ticks: {
+                    color: '#e2e8f0', // Nombres en gris claro
+                    font: {
+                        size: 14
+                    }
+                },
+                grid: {
+                    display: false // Apagamos las líneas horizontales para que el diseño respire
+                }
+            }
         }
     }
 });
@@ -334,7 +366,7 @@ new Chart(document.getElementById('rankingChart'), {
             label: 'Score',
             data: rankingOrdenado.map(e => e.score),
             backgroundColor: coloresRanking,
-            borderRadius: 6
+            borderRadius: 6 // Mantenemos tus bordes redondeados que quedan muy bien
         }]
     },
     options: {
@@ -342,19 +374,48 @@ new Chart(document.getElementById('rankingChart'), {
         maintainAspectRatio: false,
 
         plugins: {
+            // 1. MEJORA DEL TÍTULO
             title: {
                 display: true,
-                text: 'Ranking de empresas (Score IA)'
+                text: 'Ranking de empresas (Score IA)',
+                color: '#ffffff', // Título en blanco
+                font: {
+                    size: 20, // Más grande
+                    weight: 'bold'
+                },
+                padding: { bottom: 20 }
             },
             legend: {
-                display: false
+                display: false // Mantenemos esto apagado ya que el color explica la barra
             }
         },
 
         scales: {
-            y: {
+            x: { // <--- EJE X (Nombres de las empresas)
+                ticks: {
+                    color: '#e2e8f0', // Nombres en gris claro
+                    font: {
+                        size: 14 // Texto más legible
+                    }
+                },
+                grid: {
+                    display: false // Ocultamos las líneas verticales para limpiar el diseño
+                }
+            },
+            y: { // <--- EJE Y (Números 0 - 100)
                 beginAtZero: true,
-                max: 100
+                max: 100,
+                ticks: {
+                    color: '#ffffff', // Números en blanco puro
+                    font: {
+                        size: 14,
+                        weight: 'bold' // Negrita para el score
+                    }
+                },
+                grid: {
+                    color: 'rgba(255, 255, 255, 0.15)', // Líneas horizontales sutiles
+                    tickColor: 'transparent' // Quitamos la pequeña rayita que une el número con la línea
+                }
             }
         }
     }
@@ -406,14 +467,37 @@ new Chart(document.getElementById('scatterChart'), {
         maintainAspectRatio: false,
 
         plugins: {
+            // 1. MEJORA DEL TÍTULO
             title: {
                 display: true,
-                text: 'Mapa competitivo: Visibilidad vs Ranking'
+                text: 'Mapa Competitivo: Visibilidad vs Ranking',
+                color: '#ffffff', // Título en blanco puro
+                font: {
+                    size: 20,     // Mismo tamaño que los demás gráficos
+                    weight: 'bold'
+                },
+                padding: { bottom: 20 }
             },
+            
+            // 2. MEJORA DE LA LEYENDA (Abajo)
             legend: {
-                position: 'bottom' // 👈 queda mucho mejor
+                position: 'bottom',
+                labels: {
+                    color: '#e2e8f0', // Textos de la leyenda más claros
+                    font: {
+                        size: 13
+                    },
+                    padding: 20, // Más espacio entre la leyenda y el gráfico
+                    usePointStyle: true // Hace que la leyenda muestre circulitos en vez de rectángulos (queda muy elegante)
+                }
             },
+            
+            // 3. MEJORA DEL TOOLTIP (Al pasar el mouse)
             tooltip: {
+                backgroundColor: 'rgba(15, 23, 42, 0.9)', // Fondo más oscuro y sólido
+                titleFont: { size: 14 },
+                bodyFont: { size: 14 },
+                padding: 12,
                 callbacks: {
                     label: function(context) {
                         const d = context.raw;
@@ -427,25 +511,44 @@ new Chart(document.getElementById('scatterChart'), {
             x: {
                 min: 0,
                 max: 100,
+                // 4. MEJORA DE TÍTULOS Y NÚMEROS DEL EJE X
                 title: {
                     display: true,
-                    text: '% Menciones (Visibilidad)'
+                    text: '% Menciones (Visibilidad)',
+                    color: '#94a3b8', // Título del eje en un gris intermedio
+                    font: { size: 14, weight: 'bold' },
+                    padding: { top: 10 }
+                },
+                ticks: {
+                    color: '#e2e8f0', // Números claros
+                    font: { size: 13 }
                 },
                 grid: {
-                    color: (ctx) =>
-                        ctx.tick.value === 50 ? '#64748b' : '#334155'
+                    // Mantengo tu excelente lógica para el cuadrante central, 
+                    // solo ajusté los colores para que resalte la cruz central (50)
+                    color: (ctx) => ctx.tick.value === 50 ? 'rgba(255, 255, 255, 0.3)' : 'rgba(255, 255, 255, 0.05)',
+                    tickColor: 'transparent'
                 }
             },
             y: {
                 min: 0,
                 max: 100,
+                // 5. MEJORA DE TÍTULOS Y NÚMEROS DEL EJE Y
                 title: {
                     display: true,
-                    text: 'Score Ranking'
+                    text: 'Score Ranking',
+                    color: '#94a3b8', // Título del eje en un gris intermedio
+                    font: { size: 14, weight: 'bold' },
+                    padding: { bottom: 10 }
+                },
+                ticks: {
+                    color: '#e2e8f0', // Números claros
+                    font: { size: 13 }
                 },
                 grid: {
-                    color: (ctx) =>
-                        ctx.tick.value === 50 ? '#64748b' : '#334155'
+                    // Misma lógica de color que en el eje X para la cruz central
+                    color: (ctx) => ctx.tick.value === 50 ? 'rgba(255, 255, 255, 0.3)' : 'rgba(255, 255, 255, 0.05)',
+                    tickColor: 'transparent'
                 }
             }
         }
@@ -514,18 +617,54 @@ new Chart(document.getElementById('comparacionChart'), {
         ]
     },
     options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-            r: {
-                min: 0,
-                max: 10,
-                ticks: {
-                    stepSize: 2
+    responsive: true,
+    maintainAspectRatio: false,
+    // (Opcional) Mejoramos también el texto de la leyenda superior
+    plugins: {
+        legend: {
+            labels: {
+                color: '#e2e8f0', // Un gris clarito
+                font: { size: 14 }
+            }
+        }
+    },
+    scales: {
+        r: {
+            min: 0,
+            max: 10,
+            
+            // 1. LOS NÚMEROS DEL CENTRO (Ticks)
+            ticks: {
+                stepSize: 2,
+                color: '#e9c46a', // Color del número (blanco)
+                backdropColor: 'rgba(30, 41, 59, 0.8)', // Un fondo oscuro detrás de cada número para que no se mezcle con las líneas rojas/azules
+                font: {
+                    size: 14,     // Tamaño más grande
+                    weight: 'bold' // Negrita para mayor legibilidad
+                },
+                backdropPadding: 4 // Un poco de aire alrededor del número
+            },
+
+            // 2. LAS CATEGORÍAS ALREDEDOR (Point Labels)
+            pointLabels: {
+                color: '#e2e8f0', // Letra clara para contrastar con tu fondo oscuro
+                font: {
+                    size: 14 // Aumentamos el tamaño de "Percepción", "Confianza", etc.
                 }
+            },
+
+            // 3. LA TELARAÑA: Círculos concéntricos
+            grid: {
+                color: 'rgba(255, 255, 255, 0.15)', // Hacemos las líneas de la red más visibles (blanco semitransparente)
+            },
+
+            // 4. LA TELARAÑA: Líneas que van del centro hacia afuera
+            angleLines: {
+                color: 'rgba(255, 255, 255, 0.15)', // Mismo color que la red para que coincida
             }
         }
     }
+}
 });
 
 
@@ -581,7 +720,7 @@ contenedor.innerHTML = `
     </div>
 `;
 
-//COMPARACION DE PERCEPCION CON COMPETIDOR DIRECTO
+
 
 new Chart(document.getElementById('radarChart'), {
     type: 'radar',
@@ -620,19 +759,55 @@ new Chart(document.getElementById('radarChart'), {
             }
         ]
     },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-            r: {
-                min: 0,
-                max: 10,
-                ticks: {
-                    stepSize: 2
+options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    // (Opcional) Mejoramos también el texto de la leyenda superior
+    plugins: {
+        legend: {
+            labels: {
+                color: '#e2e8f0', // Un gris clarito
+                font: { size: 14 }
+            }
+        }
+    },
+    scales: {
+        r: {
+            min: 0,
+            max: 10,
+            
+            // 1. LOS NÚMEROS DEL CENTRO (Ticks)
+            ticks: {
+                stepSize: 2,
+                color: '#e9c46a', // Color del número (blanco)
+                backdropColor: 'rgba(30, 41, 59, 0.8)', // Un fondo oscuro detrás de cada número para que no se mezcle con las líneas rojas/azules
+                font: {
+                    size: 14,     // Tamaño más grande
+                    weight: 'bold' // Negrita para mayor legibilidad
+                },
+                backdropPadding: 4 // Un poco de aire alrededor del número
+            },
+
+            // 2. LAS CATEGORÍAS ALREDEDOR (Point Labels)
+            pointLabels: {
+                color: '#e2e8f0', // Letra clara para contrastar con tu fondo oscuro
+                font: {
+                    size: 14 // Aumentamos el tamaño de "Percepción", "Confianza", etc.
                 }
+            },
+
+            // 3. LA TELARAÑA: Círculos concéntricos
+            grid: {
+                color: 'rgba(255, 255, 255, 0.15)', // Hacemos las líneas de la red más visibles (blanco semitransparente)
+            },
+
+            // 4. LA TELARAÑA: Líneas que van del centro hacia afuera
+            angleLines: {
+                color: 'rgba(255, 255, 255, 0.15)', // Mismo color que la red para que coincida
             }
         }
     }
+}
 });// =======================
 // HEATMAP DE GAPS
 // =======================
@@ -660,7 +835,8 @@ new Chart(document.getElementById('heatmapChart'), {
             {
                 label: 'Mi Empresa',
                 data: scoresMios,
-                backgroundColor: '#2e7245' // Azul
+                // Mantenemos tus colores originales para las barras
+                backgroundColor: '#2e7245' // Verde
             },
             {
                 label: 'Competidor',
@@ -670,21 +846,68 @@ new Chart(document.getElementById('heatmapChart'), {
         ]
     },
     options: {
-        indexAxis: 'y', // <--- ESTO GIRA EL GRÁFICO (Categorías al Eje Y)
+        indexAxis: 'y', // <--- Gira el gráfico
+        responsive: true,
+        maintainAspectRatio: false, // Importante para que ocupe todo su contenedor
+        
         plugins: {
+            // 1. MEJORA DE TÍTULO
             title: {
                 display: true,
-                text: 'Mi Empresa vs Competidor por Categoría'
+                text: 'Mi Empresa vs Competidor por Categoría',
+                color: '#ffffff', // Título en blanco puro
+                font: {
+                    size: 20, // Título más grande
+                    weight: 'bold'
+                },
+                padding: { bottom: 20 }
+            },
+            // 2. MEJORA DE LA LEYENDA (Los cuadraditos superiores)
+            legend: {
+                labels: {
+                    color: '#e2e8f0', // Texto de leyenda claro (gris clarito)
+                    font: {
+                        size: 16 // Leyenda más grande
+                    }
+                }
             }
         },
         scales: {
-            x: { // <--- AHORA LOS NÚMEROS ESTÁN EN EL EJE X
-                min: 0,              // Límite mínimo
-                max: 10,             // Límite máximo
-                beginAtZero: true    // Asegura que arranque de 0
+            x: { // <--- EJE DE NÚMEROS (0-10)
+                min: 0,
+                max: 10,
+                beginAtZero: true,
+                
+                // 3. MEJORA DE LOS NÚMEROS (0-10)
+                ticks: {
+                    color: '#ffffff', // Números en blanco puro
+                    font: {
+                        size: 14, // Números más grandes
+                        weight: 'bold'
+                    }
+                },
+                
+                // 4. MEJORA DE LA RED VERTICAL ("Telaraña")
+                grid: {
+                    color: 'rgba(255, 255, 255, 0.15)', // Líneas verticales claras pero sutiles
+                    tickColor: 'transparent' // Limpiamos la línea base del eje
+                }
             },
-            y: {
-                // El Eje Y ahora maneja las etiquetas de texto automáticamente
+            y: { // <--- EJE DE CATEGORÍAS (Texto a la izquierda)
+                
+                // 5. MEJORA DE LAS ETIQUETAS DE TEXTO
+                ticks: {
+                    color: '#e2e8f0', // Texto de categorías claro (gris clarito)
+                    font: {
+                        size: 14 // Categorías más grandes
+                    }
+                },
+                
+                // 6. MEJORA DE LA RED HORIZONTAL ("Telaraña")
+                grid: {
+                    color: 'rgba(255, 255, 255, 0.15)', // Líneas horizontales claras pero sutiles
+                    tickColor: 'transparent' // Limpiamos la línea base del eje
+                }
             }
         }
     }
