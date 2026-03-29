@@ -173,6 +173,7 @@ form.addEventListener('submit', async function(evento) {
     setTimeout(() => loadingText.innerText = "Cruzando datos con Claude 3...", 2000);
     setTimeout(() => loadingText.innerText = "Calculando GEO Score...", 4500);
 
+    
     // 2. Preparar los datos
     const datosParaBackend = {
         marca: document.getElementById('marca').value,

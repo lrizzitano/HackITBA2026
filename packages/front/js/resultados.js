@@ -636,66 +636,59 @@ new Chart(document.getElementById('radarChart'), {
 });// =======================
 // HEATMAP DE GAPS
 // =======================
-
 const categoriasHeat = [
-    "percepcion",
-    "confianza",
-    "Relacion calidad precio",
-    "popularidad",
-    "diferenciacion",
-    "innovacion",
-    "propuesta de valor",
-    "publico objetivo",
-    "aspiracion",
-    "riesgo"
+    "percepcion", "confianza", "Relacion calidad precio", "popularidad",
+    "diferenciacion", "innovacion", "propuesta de valor", "publico objetivo",
+    "aspiracion", "riesgo"
 ];
 
 const labelsHeat = [
-    "Percepción",
-    "Confianza",
-    "Relación calidad-precio",
-    "Popularidad",
-    "Diferenciación",
-    "Innovación",
-    "Propuesta de valor",
-    "Público objetivo",
-    "Aspiración",
-    "Riesgo"
+    "Percepción", "Confianza", "Relación calidad-precio", "Popularidad",
+    "Diferenciación", "Innovación", "Propuesta de valor", "Público objetivo",
+    "Aspiración", "Riesgo"
 ];
 
-// Calculamos gaps contra competidor
-const gaps = categoriasHeat.map(k =>
-    data.percepcion_scores[k] - data.percepcion_scores_competidor[k]
-);
+// Extraemos los puntajes crudos en lugar del gap
+const scoresMios = categoriasHeat.map(k => data.percepcion_scores[k]);
+const scoresCompetidor = categoriasHeat.map(k => data.percepcion_scores_competidor[k]);
 
 new Chart(document.getElementById('heatmapChart'), {
     type: 'bar',
     data: {
         labels: labelsHeat,
-        datasets: [{
-            label: 'Gap vs competidor',
-            data: gaps,
-            backgroundColor: gaps.map(v =>
-                v > 0 ? '#22c55e' : '#ef4444' // verde si ganás, rojo si perdés
-            )
-        }]
+        datasets: [
+            {
+                label: 'Mi Empresa',
+                data: scoresMios,
+                backgroundColor: '#2e7245' // Azul
+            },
+            {
+                label: 'Competidor',
+                data: scoresCompetidor,
+                backgroundColor: '#9ca3af' // Gris
+            }
+        ]
     },
     options: {
+        indexAxis: 'y', // <--- ESTO GIRA EL GRÁFICO (Categorías al Eje Y)
         plugins: {
             title: {
                 display: true,
-                text: 'Dónde ganás vs dónde perdés'
+                text: 'Mi Empresa vs Competidor por Categoría'
             }
         },
         scales: {
+            x: { // <--- AHORA LOS NÚMEROS ESTÁN EN EL EJE X
+                min: 0,              // Límite mínimo
+                max: 10,             // Límite máximo
+                beginAtZero: true    // Asegura que arranque de 0
+            },
             y: {
-                min: -10,
-                max: 10
+                // El Eje Y ahora maneja las etiquetas de texto automáticamente
             }
         }
     }
 });
-
 //ANALISIS FINAL
 
 
