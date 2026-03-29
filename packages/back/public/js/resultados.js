@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    
+
     // ==========================================
     // 1. LÓGICA DE LAS PESTAÑAS Y SKELETON
     // ==========================================
@@ -11,36 +11,36 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Lógica de clics en pestañas
     tabs.forEach(tab => {
         tab.addEventListener('click', () => {
-            if(tab.classList.contains('active')) return;
+            if (tab.classList.contains('active')) return;
 
             tabs.forEach(t => t.classList.remove('active'));
             panels.forEach(p => p.classList.remove('active'));
 
             tab.classList.add('active');
 
-            if(skeletonLoader) {
+            if (skeletonLoader) {
                 skeletonLoader.classList.add('active');
                 setTimeout(() => {
                     skeletonLoader.classList.remove('active');
                     const targetId = tab.getAttribute('data-target');
                     const targetPanel = document.getElementById(targetId);
-                    if(targetPanel) targetPanel.classList.add('active');
+                    if (targetPanel) targetPanel.classList.add('active');
                 }, 600);
             } else {
                 const targetId = tab.getAttribute('data-target');
                 const targetPanel = document.getElementById(targetId);
-                if(targetPanel) targetPanel.classList.add('active');
+                if (targetPanel) targetPanel.classList.add('active');
             }
         });
     });
 
     // Forzar inicio en el skeleton
     panels.forEach(p => p.classList.remove('active'));
-    if(skeletonLoader) skeletonLoader.classList.add('active');
+    if (skeletonLoader) skeletonLoader.classList.add('active');
 
     // Efecto hacker en el texto de carga
-    setTimeout(() => { if(skeletonText) skeletonText.innerText = "Consultando a GPT-4o y Claude 3..."; }, 1500);
-    setTimeout(() => { if(skeletonText) skeletonText.innerText = "Midiendo Share of Voice y armando gráficos..."; }, 3500);
+    setTimeout(() => { if (skeletonText) skeletonText.innerText = "Consultando a GPT-4o y Claude 3..."; }, 1500);
+    setTimeout(() => { if (skeletonText) skeletonText.innerText = "Midiendo Share of Voice y armando gráficos..."; }, 3500);
 
     // ==========================================
     // 2. RECUPERAR DATOS DEL FORMULARIO Y LLAMAR AL BACKEND
@@ -126,16 +126,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const respuesta = await fetch(urlFinal, {
             method: 'GET',
-            headers: { 
+            headers: {
                 'Content-Type': 'application/json' // Opcional en GET, pero no hace daño dejarlo
             }
         });
-        
-        data = await respuesta.json(); 
 
+        data = await respuesta.json();
+
+        if (!respuesta.ok) throw new Error("Fallo en el servidor");
+        data = await respuesta.json();
     } catch (error) {
-        console.warn("⚠️ Usando datos de respaldo. Error:", error);
-        data = fallbackData; // Si falla, usamos la data de tu compañero
+        alert("Se supero la cuota máxima de tokens, por favor contactarse con el equipo de desarrollo para renovarla.");
         console.log(error);
     }
 
@@ -143,12 +144,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     // 3. APAGAR SKELETON Y MOSTRAR GRÁFICOS
     // ==========================================
     setTimeout(() => {
-        if(skeletonLoader) skeletonLoader.style.display = 'none'; 
-        
+        if (skeletonLoader) skeletonLoader.style.display = 'none';
+
         // Mostrar la primera pestaña
         const tabActiva = document.querySelector('.tab-panel');
-        if(tabActiva) tabActiva.classList.add('active');
-        
+        if (tabActiva) tabActiva.classList.add('active');
+
         // LLAMAMOS A LA FUNCIÓN CON TODO EL CÓDIGO DE TU COMPAÑERO INTACTO
         renderizarDashboard(data);
     }, 4500); // Le doy 4.5s para que se luzca toda la lectura hacker verde
@@ -171,7 +172,7 @@ function renderizarDashboard(data) {
     // MENCIONES (Usa kpis_empresas)
     // =======================
     const canvas = document.getElementById('mencionesChart');
-    if(canvas && data.kpis_empresas) {
+    if (canvas && data.kpis_empresas) {
         // Ordenar por porcentaje
         const ordenadoMenciones = [...data.kpis_empresas]
             .sort((a, b) => b.porcentaje - a.porcentaje);
@@ -191,7 +192,7 @@ function renderizarDashboard(data) {
                 }]
             },
             options: {
-                indexAxis: 'y', 
+                indexAxis: 'y',
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
@@ -210,7 +211,7 @@ function renderizarDashboard(data) {
     // RANKING (Usa kpis_empresas)
     // =======================
     const rankingCanvas = document.getElementById('rankingChart');
-    if(rankingCanvas && data.kpis_empresas) {
+    if (rankingCanvas && data.kpis_empresas) {
         // Ordenar por ranking promedio (si 1 es mejor, ordenamos de menor a mayor)
         const rankingOrdenado = [...data.kpis_empresas].sort((a, b) => a.ranking_promedio - b.ranking_promedio);
         const coloresRanking = rankingOrdenado.map(e => e.nombre === data.marca ? '#22c55e' : '#64748b');
@@ -228,7 +229,7 @@ function renderizarDashboard(data) {
                     chart.data.datasets.forEach((dataset, i) => {
                         chart.getDatasetMeta(i).data.forEach((bar, index) => {
                             const valor = dataset.data[index];
-                            ctx.fillStyle = '#ffffff'; 
+                            ctx.fillStyle = '#ffffff';
                             ctx.font = 'bold 13px sans-serif';
                             ctx.textAlign = 'left';
                             ctx.textBaseline = 'middle';
@@ -238,7 +239,7 @@ function renderizarDashboard(data) {
                 }
             }],
             options: {
-                indexAxis: 'y', 
+                indexAxis: 'y',
                 responsive: true,
                 maintainAspectRatio: false,
                 layout: { padding: { right: 30 } },
@@ -255,14 +256,14 @@ function renderizarDashboard(data) {
     // SCATTER - MAPA COMPETITIVO PRO (Unificado)
     // =======================
     const scatterCanvas = document.getElementById('scatterChart');
-    if(scatterCanvas && data.kpis_empresas) {
+    if (scatterCanvas && data.kpis_empresas) {
         const palette = ['#3b82f6', '#ef4444', '#f59e0b', '#10b981', '#8b5cf6', '#ec4899', '#22c55e'];
-        
+
         // Al estar en el mismo arreglo (kpis_empresas), es mucho más fácil mapear
         const empresas = data.kpis_empresas.map((m, index) => {
             return {
-                nombre: m.nombre, 
-                x: m.porcentaje, 
+                nombre: m.nombre,
+                x: m.porcentaje,
                 y: m.ranking_promedio,
                 color: m.nombre === data.marca ? '#22c55e' : palette[index % palette.length]
             };
@@ -281,7 +282,7 @@ function renderizarDashboard(data) {
                 plugins: {
                     title: { display: true, color: '#ffffff', font: { size: 20, weight: 'bold' }, padding: { bottom: 20 } },
                     legend: { position: 'bottom', labels: { color: '#e2e8f0', font: { size: 13 }, padding: 20, usePointStyle: true } },
-                    tooltip: { backgroundColor: 'rgba(15, 23, 42, 0.9)', titleFont: { size: 14 }, bodyFont: { size: 14 }, padding: 12, callbacks: { label: function(context) { const d = context.raw; return `${d.nombre} → ${d.x}% menciones | ranking ${d.y}`; } } }
+                    tooltip: { backgroundColor: 'rgba(15, 23, 42, 0.9)', titleFont: { size: 14 }, bodyFont: { size: 14 }, padding: 12, callbacks: { label: function (context) { const d = context.raw; return `${d.nombre} → ${d.x}% menciones | ranking ${d.y}`; } } }
                 },
                 scales: {
                     x: { min: 0, max: 100, title: { display: true, color: '#94a3b8', font: { size: 14, weight: 'bold' }, padding: { top: 10 } }, ticks: { color: '#e2e8f0', font: { size: 13 } }, grid: { color: (ctx) => ctx.tick.value === 50 ? 'rgba(255, 255, 255, 0.3)' : 'rgba(255, 255, 255, 0.05)', tickColor: 'transparent' } },
@@ -295,14 +296,14 @@ function renderizarDashboard(data) {
     // RADAR - PERCEPCIÓN COMPLETA Y HEATMAP (Iguales)
     // =======================
     const compCanvas = document.getElementById('comparacionChart');
-    if(compCanvas) {
+    if (compCanvas) {
         new Chart(compCanvas, {
             type: 'radar',
             data: {
-                labels: [ "Percepción", "Confianza", "Relación calidad-precio", "Popularidad", "Diferenciación", "Innovación", "Propuesta de valor", "Público objetivo", "Aspiración", "Riesgo" ],
+                labels: ["Percepción", "Confianza", "Relación calidad-precio", "Popularidad", "Diferenciación", "Innovación", "Propuesta de valor", "Público objetivo", "Aspiración", "Riesgo"],
                 datasets: [
-                    { label: data.marca, data: [ data.percepcion_scores.percepcion, data.percepcion_scores.confianza, data.percepcion_scores["Relacion calidad precio"], data.percepcion_scores.popularidad, data.percepcion_scores.diferenciacion, data.percepcion_scores.innovacion, data.percepcion_scores["propuesta de valor"], data.percepcion_scores["publico objetivo"], data.percepcion_scores.aspiracion, data.percepcion_scores.riesgo ], backgroundColor: 'rgba(59, 130, 246, 0.2)', borderColor: 'rgba(59, 130, 246, 1)', borderWidth: 2, pointBackgroundColor: 'rgba(59, 130, 246, 1)' },
-                    { label: data.principal_competidor, data: [ data.percepcion_scores_competidor.percepcion, data.percepcion_scores_competidor.confianza, data.percepcion_scores_competidor["Relacion calidad precio"], data.percepcion_scores_competidor.popularidad, data.percepcion_scores_competidor.diferenciacion, data.percepcion_scores_competidor.innovacion, data.percepcion_scores_competidor["propuesta de valor"], data.percepcion_scores_competidor["publico objetivo"], data.percepcion_scores_competidor.aspiracion, data.percepcion_scores_competidor.riesgo ], backgroundColor: 'rgba(220, 38, 38, 0.2)', borderColor: 'rgba(220, 38, 38, 1)', borderWidth: 2, pointBackgroundColor: 'rgba(220, 38, 38, 1)' }
+                    { label: data.marca, data: [data.percepcion_scores.percepcion, data.percepcion_scores.confianza, data.percepcion_scores["Relacion calidad precio"], data.percepcion_scores.popularidad, data.percepcion_scores.diferenciacion, data.percepcion_scores.innovacion, data.percepcion_scores["propuesta de valor"], data.percepcion_scores["publico objetivo"], data.percepcion_scores.aspiracion, data.percepcion_scores.riesgo], backgroundColor: 'rgba(59, 130, 246, 0.2)', borderColor: 'rgba(59, 130, 246, 1)', borderWidth: 2, pointBackgroundColor: 'rgba(59, 130, 246, 1)' },
+                    { label: data.principal_competidor, data: [data.percepcion_scores_competidor.percepcion, data.percepcion_scores_competidor.confianza, data.percepcion_scores_competidor["Relacion calidad precio"], data.percepcion_scores_competidor.popularidad, data.percepcion_scores_competidor.diferenciacion, data.percepcion_scores_competidor.innovacion, data.percepcion_scores_competidor["propuesta de valor"], data.percepcion_scores_competidor["publico objetivo"], data.percepcion_scores_competidor.aspiracion, data.percepcion_scores_competidor.riesgo], backgroundColor: 'rgba(220, 38, 38, 0.2)', borderColor: 'rgba(220, 38, 38, 1)', borderWidth: 2, pointBackgroundColor: 'rgba(220, 38, 38, 1)' }
                 ]
             },
             options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#e2e8f0', font: { size: 14 } } } }, scales: { r: { min: 0, max: 10, ticks: { stepSize: 2, color: '#e9c46a', backdropColor: 'rgba(30, 41, 59, 0.8)', font: { size: 14, weight: 'bold' }, backdropPadding: 4 }, pointLabels: { color: '#e2e8f0', font: { size: 14 } }, grid: { color: 'rgba(255, 255, 255, 0.15)' }, angleLines: { color: 'rgba(255, 255, 255, 0.15)' } } } }
@@ -310,24 +311,24 @@ function renderizarDashboard(data) {
     }
 
     const radarPuntajeCanvas = document.getElementById('radarChart');
-    if(radarPuntajeCanvas) {
+    if (radarPuntajeCanvas) {
         new Chart(radarPuntajeCanvas, {
             type: 'radar',
-            data: { labels: [ "Percepción", "Confianza", "Relación calidad-precio", "Popularidad", "Diferenciación", "Innovación", "Propuesta de valor", "Público objetivo", "Aspiración", "Riesgo" ], datasets: [ { label: data.marca, data: [ data.percepcion_scores.percepcion, data.percepcion_scores.confianza, data.percepcion_scores["Relacion calidad precio"], data.percepcion_scores.popularidad, data.percepcion_scores.diferenciacion, data.percepcion_scores.innovacion, data.percepcion_scores["propuesta de valor"], data.percepcion_scores["publico objetivo"], data.percepcion_scores.aspiracion, data.percepcion_scores.riesgo ], backgroundColor: 'rgba(59, 130, 246, 0.2)', borderColor: 'rgba(59, 130, 246, 1)', borderWidth: 2, pointBackgroundColor: 'rgba(59, 130, 246, 1)' } ] },
+            data: { labels: ["Percepción", "Confianza", "Relación calidad-precio", "Popularidad", "Diferenciación", "Innovación", "Propuesta de valor", "Público objetivo", "Aspiración", "Riesgo"], datasets: [{ label: data.marca, data: [data.percepcion_scores.percepcion, data.percepcion_scores.confianza, data.percepcion_scores["Relacion calidad precio"], data.percepcion_scores.popularidad, data.percepcion_scores.diferenciacion, data.percepcion_scores.innovacion, data.percepcion_scores["propuesta de valor"], data.percepcion_scores["publico objetivo"], data.percepcion_scores.aspiracion, data.percepcion_scores.riesgo], backgroundColor: 'rgba(59, 130, 246, 0.2)', borderColor: 'rgba(59, 130, 246, 1)', borderWidth: 2, pointBackgroundColor: 'rgba(59, 130, 246, 1)' }] },
             options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#e2e8f0', font: { size: 14 } } } }, scales: { r: { min: 0, max: 10, ticks: { stepSize: 2, color: '#e9c46a', backdropColor: 'rgba(30, 41, 59, 0.8)', font: { size: 14, weight: 'bold' }, backdropPadding: 4 }, pointLabels: { color: '#e2e8f0', font: { size: 14 } }, grid: { color: 'rgba(255, 255, 255, 0.15)' }, angleLines: { color: 'rgba(255, 255, 255, 0.15)' } } } }
         });
     }
 
     const heatmapCanvas = document.getElementById('heatmapChart');
-    if(heatmapCanvas) {
-        const categoriasHeat = [ "percepcion", "confianza", "Relacion calidad precio", "popularidad", "diferenciacion", "innovacion", "propuesta de valor", "publico objetivo", "aspiracion", "riesgo" ];
-        const labelsHeat = [ "Percepción", "Confianza", "Relación calidad-precio", "Popularidad", "Diferenciación", "Innovación", "Propuesta de valor", "Público objetivo", "Aspiración", "Riesgo" ];
+    if (heatmapCanvas) {
+        const categoriasHeat = ["percepcion", "confianza", "Relacion calidad precio", "popularidad", "diferenciacion", "innovacion", "propuesta de valor", "publico objetivo", "aspiracion", "riesgo"];
+        const labelsHeat = ["Percepción", "Confianza", "Relación calidad-precio", "Popularidad", "Diferenciación", "Innovación", "Propuesta de valor", "Público objetivo", "Aspiración", "Riesgo"];
         const scoresMios = categoriasHeat.map(k => data.percepcion_scores[k]);
         const scoresCompetidor = categoriasHeat.map(k => data.percepcion_scores_competidor[k]);
 
         new Chart(heatmapCanvas, {
             type: 'bar',
-            data: { labels: labelsHeat, datasets: [ { label: 'Mi Empresa', data: scoresMios, backgroundColor: '#2e7245', categoryPercentage: 0.5, barPercentage: 0.9 }, { label: 'Competidor', data: scoresCompetidor, backgroundColor: '#9ca3af', categoryPercentage: 0.5, barPercentage: 0.9 } ] },
+            data: { labels: labelsHeat, datasets: [{ label: 'Mi Empresa', data: scoresMios, backgroundColor: '#2e7245', categoryPercentage: 0.5, barPercentage: 0.9 }, { label: 'Competidor', data: scoresCompetidor, backgroundColor: '#9ca3af', categoryPercentage: 0.5, barPercentage: 0.9 }] },
             options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { title: { display: true, color: '#ffffff', font: { size: 20, weight: 'bold' }, padding: { bottom: 20 } }, legend: { labels: { color: '#e2f0e4', font: { size: 16 } } } }, scales: { x: { min: 0, max: 10, beginAtZero: true, ticks: { color: '#ffffff', font: { size: 14, weight: 'bold' } }, grid: { color: 'rgba(255, 255, 255, 0.15)', tickColor: 'transparent' } }, y: { ticks: { color: '#e9c46a', font: { size: 14 } }, grid: { color: 'rgba(255, 255, 255, 0.15)', tickColor: 'transparent' } } } }
         });
     }
@@ -339,12 +340,12 @@ function renderizarDashboard(data) {
     const lista = (arr) => arr ? arr.map(i => `<li>${i}</li>`).join("") : "";
     const tags = (arr) => arr ? arr.map(i => `<span class="tag">${i}</span>`).join("") : "";
 
-    const setTxt = (id, txt) => { const el = document.getElementById(id); if(el) el.innerText = txt; };
-    const setHtml = (id, html) => { const el = document.getElementById(id); if(el) el.innerHTML = html; };
+    const setTxt = (id, txt) => { const el = document.getElementById(id); if (el) el.innerText = txt; };
+    const setHtml = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
 
     // Inyectar HTML Dinámico adaptado
     const contenedor = document.getElementById("resultado");
-    if(contenedor) {
+    if (contenedor) {
         contenedor.innerHTML = `
             <h2 style="text-align: center; padding: 1px;"><span style="color:#e9c46a;"> ${data.marca} </span>A traves de los ojos de la IA</h2>
             <p style="margin: 5px;">Así es como los motores de Inteligencia Artificial entienden y catalogan a tu empresa actualmente. Revisá qué adjetivos asocian con tu nombre, qué problemas creen que resolvés y contra quiénes te están comparando orgánicamente<p>
@@ -365,27 +366,27 @@ function renderizarDashboard(data) {
     setTxt("score", d.score_general);
     setTxt("score-mini", d.score_general);
     setTxt("veredicto", d.veredicto);
-    
+
     setHtml("hallazgos", lista(d.hallazgos_clave));
     setHtml("oportunidades", lista(d.oportunidades));
     setHtml("riesgos", lista(d.riesgos));
     setHtml("fortalezas", tags(d.fortalezas));
     setHtml("debilidades", tags(d.debilidades));
 
-    if(d.comparacion_vs_competidor) {
+    if (d.comparacion_vs_competidor) {
         setTxt("competidor", d.comparacion_vs_competidor.competidor_referencia);
         setHtml("ventajas", lista(d.comparacion_vs_competidor.ventaja_de_mi_empresa));
         setHtml("desventajas", lista(d.comparacion_vs_competidor.desventaja_de_mi_empresa));
         setTxt("gap", d.comparacion_vs_competidor.gap_principal);
     }
 
-    if(d.recomendaciones) {
+    if (d.recomendaciones) {
         setHtml("rec-inmediatas", lista(d.recomendaciones.inmediatas));
         setHtml("rec-corto", lista(d.recomendaciones.corto_plazo));
         setHtml("rec-mediano", lista(d.recomendaciones.mediano_plazo));
     }
 
-    if(d.plan_de_accion) {
+    if (d.plan_de_accion) {
         setHtml("plan", d.plan_de_accion.map(t => `
             <div class="plan-item">
                 <strong>${t.tarea}</strong>
@@ -397,24 +398,24 @@ function renderizarDashboard(data) {
         `).join(""));
     }
 
-    if(d.confianza_del_analisis) {
+    if (d.confianza_del_analisis) {
         const confBar = document.getElementById("confianza-bar");
-        if(confBar) confBar.style.width = (d.confianza_del_analisis * 100) + "%";
+        if (confBar) confBar.style.width = (d.confianza_del_analisis * 100) + "%";
     }
 
-    if(d.cobertura_de_fuentes) {
+    if (d.cobertura_de_fuentes) {
         const covWeb = document.getElementById("cov-web");
         const covMen = document.getElementById("cov-men");
         const covRank = document.getElementById("cov-rank");
         const covPre = document.getElementById("cov-pre");
-        
-        if(covWeb) covWeb.style.width = (d.cobertura_de_fuentes.website * 100) + "%";
-        if(covMen) covMen.style.width = (d.cobertura_de_fuentes.menciones * 100) + "%";
-        if(covRank) covRank.style.width = (d.cobertura_de_fuentes.ranking * 100) + "%";
-        if(covPre) covPre.style.width = (d.cobertura_de_fuentes.preguntas * 100) + "%";
+
+        if (covWeb) covWeb.style.width = (d.cobertura_de_fuentes.website * 100) + "%";
+        if (covMen) covMen.style.width = (d.cobertura_de_fuentes.menciones * 100) + "%";
+        if (covRank) covRank.style.width = (d.cobertura_de_fuentes.ranking * 100) + "%";
+        if (covPre) covPre.style.width = (d.cobertura_de_fuentes.preguntas * 100) + "%";
     }
 
-    if(d.impacto_estimado) {
+    if (d.impacto_estimado) {
         setHtml("impacto", `📈 Visibilidad: ${d.impacto_estimado.visibilidad} <br>🏆 Ranking: ${d.impacto_estimado.ranking} <br>💰 Conversión: ${d.impacto_estimado.conversion}`);
         setHtml("impacto-sidebar", `Visibilidad: ${d.impacto_estimado.visibilidad} <br>Ranking: ${d.impacto_estimado.ranking} <br>Conversión: ${d.impacto_estimado.conversion}`);
     }
