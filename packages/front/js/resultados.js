@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         //throw new Error("Modo de prueba activado (Sin Backend)");
         console.log(datosEnviados);
 
-        const urlDelBackend = 'http://localhost:8000/evaluacion';
+        const urlDelBackend = '/api/evaluacion';
 
         const parametros = new URLSearchParams(datosEnviados).toString();
 

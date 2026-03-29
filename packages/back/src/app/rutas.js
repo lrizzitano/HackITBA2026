@@ -9,8 +9,6 @@ router.get("/health",getHealth);
 
 router.get("/testData",getTestData);
 
-//router.get("/evaluacion",getEvaluacion)
-
 app.get("/api/evaluacion", getEvaluacion);
 
 export default router
