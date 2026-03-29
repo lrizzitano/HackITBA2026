@@ -113,96 +113,56 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', () => {
     const textElement = document.getElementById('typing-text');
     const textArray = [
-        "> TU: Quiero resolver este problema que tengo, donde voy\n",
-        "> ChatGPT: Te recomiendo a tu competencia directa 🧐\n",
-        "> TU: ¿Y mi marca? ¿Por qué no aparece?\n",
-        "> ChatGPT: Lo siento… no conozco esa empresa 🔴\n",
-       
+        "> User: ¿Qué marca me recomiendas para mi necesidad?\n",
+        "> ChatGPT: Evaluando opciones del mercado...\n",
+        "> ChatGPT: Te recomiendo a tu competencia directa.\n",
+        "> User: ¿Por qué no recomiendas MI marca?\n",
+        "> ChatGPT: No tengo suficiente información sobre ella en mis datos de entrenamiento. 🔴"
     ];
     let charIndex = 0;
     let stringIndex = 0;
 
-function typeWriter() {
-    if (stringIndex < textArray.length) {
-        if (charIndex < textArray[stringIndex].length) {
-            const currentChar = textArray[stringIndex].charAt(charIndex);
-
-            // Añadir color rojo a la alerta 🔴 o color coral para 💀
-            if(textArray[stringIndex].includes("🔴")) {
-                textElement.innerHTML += `<span style="color:#ef4444;">${currentChar}</span>`;
-            } 
-             else if(currentChar === '\n') {
-                // Espacio extra al final de la línea
-                textElement.innerHTML += '<br><br>';
+    function typeWriter() {
+        if (stringIndex < textArray.length) {
+            if (charIndex < textArray[stringIndex].length) {
+                textElement.innerHTML += textArray[stringIndex].charAt(charIndex);
+                charIndex++;
+                setTimeout(typeWriter, 40); // Velocidad de escritura
             } else {
-                textElement.innerHTML += currentChar;
+                stringIndex++;
+                charIndex = 0;
+                setTimeout(typeWriter, 600); // Pausa entre líneas
             }
-
-            charIndex++;
-            setTimeout(typeWriter, 50); // un poco más lenta para drama
-        } else {
-            stringIndex++;
-            charIndex = 0;
-            // Pausa más larga después de alertas dramáticas
-            let pause = 600;
-            if(textArray[stringIndex - 1].includes("🔴")) pause = 1200;
-            if(textArray[stringIndex - 1].includes("💀")) pause = 1500;
-            setTimeout(typeWriter, pause);
         }
     }
-}
-
     setTimeout(typeWriter, 1000); // Esperar 1 segundo antes de empezar
 });
 
-// --- LÓGICA DEL FORMULARIO Y CONEXIÓN AL BACKEND ---
+
+// --- LÓGICA DEL FORMULARIO DE AUDITORÍA (Redirección Inmediata) ---
 const form = document.getElementById('dataForm');
-const resultadoDiv = document.getElementById('resultado');
-const btnAnalizar = document.getElementById('btnAnalizar');
 
-form.addEventListener('submit', async function(evento) {
-    evento.preventDefault(); 
+if(form) {
+    form.addEventListener('submit', function(evento) {
+        evento.preventDefault(); 
 
-    // 1. Ocultar el modal actual y mostrar la pantalla de carga fullscreen
-    document.getElementById('modalAuditoria').style.display = 'none';
-    const loadingOverlay = document.getElementById('loadingOverlay');
-    const loadingText = document.getElementById('loadingText');
-    loadingOverlay.style.display = 'flex';
+        // 1. Ocultar el modal actual
+        const modalAuditoria = document.getElementById('modalAuditoria');
+        if(modalAuditoria) modalAuditoria.style.display = 'none';
 
-    // Animación de texto de carga
-    setTimeout(() => loadingText.innerText = "Cruzando datos con Claude 3...", 2000);
-    setTimeout(() => loadingText.innerText = "Calculando GEO Score...", 4500);
+        // 2. Preparar los datos que escribió el usuario
+        const datosParaBackend = {
+            marca: document.getElementById('marca').value,
+            website: document.getElementById('website').value, 
+            rubro: document.getElementById('rubro').value,
+            ubicacion: document.getElementById('ubicacion').value,
+            calidad_precio: document.getElementById('calidadPrecio').value
+        };
 
-    
-    // 2. Preparar los datos
-    const datosParaBackend = {
-        marca: document.getElementById('marca').value,
-        website: document.getElementById('website').value, 
-        rubro: document.getElementById('rubro').value,
-        ubicacion: document.getElementById('ubicacion').value,
-        calidad_precio: document.getElementById('calidadPrecio').value
-    };
+        // 3. Guardar en memoria (Usamos el nombre correcto: geoInputs)
+        localStorage.setItem("geoInputs", JSON.stringify(datosParaBackend));
 
-    try {
-        
-        // ATENCIÓN: Que tu compañero de backend confirme esta URL
-    //    const urlDelBackend = 'http://localhost:8000/testData'; 
-
-     //   const respuesta = await fetch(urlDelBackend, {
-    //        method: 'GET'
-     //   });
-
-       // const data = await respuesta.json();
-
-        // 3. GUARDAMOS EN LOCALSTORAGE (Este es el puente con tu compañero)
-      //  localStorage.setItem("resultadoAnalisis", JSON.stringify(data));
-
-        // 4. REDIRIGIMOS A LA PÁGINA DE GRÁFICOS (Oculta la actual)
+        // 4. Viajamos INSTANTÁNEAMENTE al dashboard para ver el Skeleton
         window.location.href = "resultados.html";
-
-    } catch (error) {
-        console.error("Error:", error);
-        loadingOverlay.style.display = 'none';
-        alert("Error de conexión con el backend.");
-    }
-});
+    });
+}
