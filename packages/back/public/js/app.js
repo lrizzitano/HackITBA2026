@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', () => {
     const textElement = document.getElementById('typing-text');
     const textArray = [
-        "> TU: Quiero resolver este problema que tengo, donde voy\n",
+        "> TU: Quiero resolver este problema que tengo, donde voy?\n",
         "> ChatGPT: Te recomiendo a tu competencia directa 🧐\n",
         "> TU: ¿Y mi marca? ¿Por qué no aparece?\n",
         "> ChatGPT: Lo siento… no conozco esa empresa 🔴\n",

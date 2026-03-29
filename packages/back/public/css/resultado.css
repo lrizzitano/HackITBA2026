@@ -194,3 +194,7 @@ body {
 
 .skeleton-line.title { width: 40%; height: 24px; }
 .skeleton-line.chart { width: 100%; flex: 1; border-radius: 8px; }
+
+.gridResultado{
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); gap: 20px;
+}

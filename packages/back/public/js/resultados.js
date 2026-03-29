@@ -39,8 +39,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (skeletonLoader) skeletonLoader.classList.add('active');
 
     // Efecto hacker en el texto de carga
-    setTimeout(() => { if (skeletonText) skeletonText.innerText = "Consultando a GPT-4o y Claude 3..."; }, 1500);
-    setTimeout(() => { if (skeletonText) skeletonText.innerText = "Midiendo Share of Voice y armando gráficos..."; }, 3500);
+    setTimeout(() => { if(skeletonText) skeletonText.innerText = "Consultando a GPT-4o y Claude 3..."; }, 1500);
+    
+    setTimeout(() => { if(skeletonText) skeletonText.innerText = "Midiendo Share of Voice y armando gráficos..."; }, 3500);
+    setTimeout(() => { if(skeletonText) skeletonText.innerText = "Esto puede tomar un momento, por favor espere..."; }, 2000);
+    setTimeout(() => { if(skeletonText) skeletonText.innerText = "Consultando a DeepSeek..."; }, 1500);
+    setTimeout(() => { if(skeletonText) skeletonText.innerText = "Esperando respuesta de Gemini..."; }, 2000);
+    setTimeout(() => { if(skeletonText) skeletonText.innerText = "Esto puede tomar un momento, por favor espere..."; }, 2000);
 
     // ==========================================
     // 2. RECUPERAR DATOS DEL FORMULARIO Y LLAMAR AL BACKEND
@@ -50,17 +55,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
     let data; // Acá guardaremos la respuesta
-    /*
+    
 
     // ESTOS SON LOS DATOS EXACTOS DE TU COMPAÑERO COMO RESPALDO (Plan B)
         const fallbackData = {
         marca: datosEnviados.marca || "Mi Empresa",
         rubro: "ropa",
-        descripcion: "Marca confiable con enfoque en innovación",
+        descripcion: "el centro del círculo se ubica justo sobre la última línea de la cuadrícula. Como tu punto tiene un radio (de 6 o 10 píxeles), la mitad del círculo queda fuera del  permitida y el canvas lo recorta",
         identidad: "Tecnológica, moderna y accesible",
         ubicacion: "la plata",
         relacion_precio: "",
-        adjetivos: ["Innovadora", "Confiable", "Ágil"],
+        adjetivos: ["Innovadora", "Confiable", "Tecnologica"],
         publico_objetivo: "Jóvenes profesionales interesados en tecnología",
         problematica_que_resuelve: "Falta de presencia digital consistente", // NUEVO NOMBRE
         servicios: ["Desarrollo web", "Marketing digital", "Consultoría", "pizzas"],
@@ -76,6 +81,17 @@ document.addEventListener("DOMContentLoaded", async () => {
             { nombre: "Empresa K", porcentaje: 10, ranking_promedio: 25 },
             { nombre: "Empresa EDSA", porcentaje: 10, ranking_promedio: 15 },
                         { nombre: "Empresa D", porcentaje: 50, ranking_promedio: 5 },
+            { nombre: "Empresa E", porcentaje: 10, ranking_promedio: 15 },
+            { nombre: "Empresa K", porcentaje: 10, ranking_promedio: 25 },
+            { nombre: "Empresa EDSA", porcentaje: 10, ranking_promedio: 15 },
+                        { nombre: "Empresa A", porcentaje: 25, ranking_promedio: 10 },
+            { nombre: "Empresa B", porcentaje: 80, ranking_promedio: 3 },
+            { nombre: "Empresa C", porcentaje: 10, ranking_promedio: 1 },
+            { nombre: "Empresa D", porcentaje: 50, ranking_promedio: 5 },
+            { nombre: "Empresa E", porcentaje: 90, ranking_promedio: 15 },
+            { nombre: "Empresa K", porcentaje: 10, ranking_promedio: 55 },
+            { nombre: "Empresa EDSA", porcentaje: 10, ranking_promedio: 1 },
+                        { nombre: "Empresa D", porcentaje: 5, ranking_promedio: 5 },
             { nombre: "Empresa E", porcentaje: 10, ranking_promedio: 15 },
             { nombre: "Empresa K", porcentaje: 10, ranking_promedio: 25 },
             { nombre: "Empresa EDSA", porcentaje: 10, ranking_promedio: 15 }
@@ -110,12 +126,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             cobertura_de_fuentes: { website: 0.9, menciones: 0.85, ranking: 0.8, preguntas: 0.75 },
             impacto_estimado: { visibilidad: "+35%", ranking: "+20 posiciones", conversion: "+15%" }
         }
-    };*/
+    };
 
     try {
         // 🔥 ATENCIÓN: Esta línea fuerza el modo prueba (Skeleton -> Gráficos sin backend)
         // BORREN O COMENTEN ESTA LÍNEA MAÑANA CUANDO EL BACKEND ESTÉ ANDANDO.
-        //throw new Error("Modo de prueba activado (Sin Backend)");
+        throw new Error("Modo de prueba activado (Sin Backend)");
         console.log(datosEnviados);
 
         const urlDelBackend = '/evaluacion';
@@ -284,7 +300,20 @@ function renderizarDashboard(data) {
             type: 'scatter',
             data: { datasets: datasets },
             options: {
-                responsive: true, maintainAspectRatio: false,
+                responsive: true, 
+                maintainAspectRatio: false,
+                
+                // 🔥 LA MAGIA ESTÁ AQUÍ 🔥
+                clip: false, // Evita que Chart.js "corte" los elementos que sobresalen del borde
+                layout: {
+                    padding: {
+                        top: 20,    // Da aire arriba para que no se corte el punto más alto
+                        right: 25,  // Da aire a la derecha para los puntos que llegan a 100%
+                        left: 10,
+                        bottom: 10
+                    }
+                },
+
                 plugins: {
                     title: { display: true, color: '#ffffff', font: { size: 20, weight: 'bold' }, padding: { bottom: 20 } },
                     legend: { position: 'bottom', labels: { color: '#e2e8f0', font: { size: 13 }, padding: 20, usePointStyle: true } },
@@ -355,7 +384,7 @@ function renderizarDashboard(data) {
         contenedor.innerHTML = `
             <h2 style="text-align: center; padding: 1px;"><span style="color:#e9c46a;"> ${data.marca} </span>A traves de los ojos de la IA</h2>
             <p style="margin: 5px;">Así es como los motores de Inteligencia Artificial entienden y catalogan a tu empresa actualmente. Revisá qué adjetivos asocian con tu nombre, qué problemas creen que resolvés y contra quiénes te están comparando orgánicamente<p>
-            <div class="grid">
+            <div class="gridResultado">
                 <div class="card"><h3>Descripción</h3><p>${data.descripcion}</p></div>
                 <div class="card"><h3>Identidad</h3><p>${data.identidad}</p></div>
                 <div class="card"><h3>Público objetivo</h3><p>${data.publico_objetivo}</p></div>
