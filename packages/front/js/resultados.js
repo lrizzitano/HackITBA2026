@@ -48,7 +48,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     const rawInputs = localStorage.getItem("geoInputs");
     let datosEnviados = rawInputs ? JSON.parse(rawInputs) : { marca: "Tu Empresa" };
 
+
     let data; // Acá guardaremos la respuesta
+    /*
 
     // ESTOS SON LOS DATOS EXACTOS DE TU COMPAÑERO COMO RESPALDO (Plan B)
         const fallbackData = {
@@ -108,26 +110,33 @@ document.addEventListener("DOMContentLoaded", async () => {
             cobertura_de_fuentes: { website: 0.9, menciones: 0.85, ranking: 0.8, preguntas: 0.75 },
             impacto_estimado: { visibilidad: "+35%", ranking: "+20 posiciones", conversion: "+15%" }
         }
-    };
+    };*/
 
     try {
         // 🔥 ATENCIÓN: Esta línea fuerza el modo prueba (Skeleton -> Gráficos sin backend)
         // BORREN O COMENTEN ESTA LÍNEA MAÑANA CUANDO EL BACKEND ESTÉ ANDANDO.
-        throw new Error("Modo de prueba activado (Sin Backend)");
+        //throw new Error("Modo de prueba activado (Sin Backend)");
+        console.log(datosEnviados);
 
         const urlDelBackend = 'http://localhost:8000/evaluacion';
-        const respuesta = await fetch(urlDelBackend, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(datosEnviados)
-        });
 
-        if (!respuesta.ok) throw new Error("Fallo en el servidor");
+        const parametros = new URLSearchParams(datosEnviados).toString();
+
+        const urlFinal = `${urlDelBackend}?${parametros}`;
+
+        const respuesta = await fetch(urlFinal, {
+            method: 'GET',
+            headers: { 
+                'Content-Type': 'application/json' // Opcional en GET, pero no hace daño dejarlo
+            }
+        });
+        
         data = await respuesta.json(); 
 
     } catch (error) {
         console.warn("⚠️ Usando datos de respaldo. Error:", error);
         data = fallbackData; // Si falla, usamos la data de tu compañero
+        console.log(error);
     }
 
     // ==========================================

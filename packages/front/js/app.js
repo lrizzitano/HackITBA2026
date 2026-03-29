@@ -164,11 +164,11 @@ if(form) {
 
         // 2. Preparar los datos
         const datosParaBackend = {
-            marca: document.getElementById('marca').value,
-            website: document.getElementById('website').value, 
+            nombre: document.getElementById('marca').value,
+            urlPagina: document.getElementById('website').value, 
             rubro: document.getElementById('rubro').value,
             ubicacion: document.getElementById('ubicacion').value,
-            calidad_precio: document.getElementById('calidadPrecio').value
+            relacionCalidadPrecio: document.getElementById('calidadPrecio').value
         };
 
         // 3. Guardamos en localStorage
