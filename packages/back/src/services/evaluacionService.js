@@ -9,30 +9,31 @@ import { getMarkdownContent } from './webScrapper.js';
 
 
 export async function evaluarMarca({ nombre, rubro, ubicacion, relacionCalidadPrecio, urlPagina }) {
+  let resultado, juez
   try {
-  const KPIs = await evaluarKPIs(rubro, ubicacion, relacionCalidadPrecio);
+    const KPIs = await evaluarKPIs(rubro, ubicacion, relacionCalidadPrecio);
 
-  const ranks = await evaluarRanks(nombre, rubro, ubicacion);
+    const ranks = await evaluarRanks(nombre, rubro, ubicacion);
 
-  const percepcion = await evaluarPercepcion(nombre, rubro, ubicacion);
+    const percepcion = await evaluarPercepcion(nombre, rubro, ubicacion);
 
-  const competidor = KPIs.filter(marca => marca.nombre !== nombre)[0]?.nombre || "N/A";
+    const competidor = KPIs.filter(marca => marca.nombre !== nombre)[0]?.nombre || "N/A";
 
-  const percepcion_competidor = await evaluarRanks(competidor, rubro, ubicacion);
+    const percepcion_competidor = await evaluarRanks(competidor, rubro, ubicacion);
 
-  let resultado = {
-    marca: nombre,
-    rubro: rubro,
-    ubicacion: ubicacion,
-    relacion_precio: relacionCalidadPrecio,
-    principal_competidor : competidor,
-    percepcion_scores_competidor: percepcion_competidor,
-    ...percepcion,
-    kpis_empresas : KPIs,
-    percepcion_scores : ranks
-  }
+    resultado = {
+      marca: nombre,
+      rubro: rubro,
+      ubicacion: ubicacion,
+      relacion_precio: relacionCalidadPrecio,
+      principal_competidor: competidor,
+      percepcion_scores_competidor: percepcion_competidor,
+      ...percepcion,
+      kpis_empresas: KPIs,
+      percepcion_scores: ranks
+    }
 
-  const juez = await llamarAlJuez(urlPagina, resultado);
+    juez = await llamarAlJuez(urlPagina, resultado);
 
   } catch (error) {
     console.error("Error en la evaluación de la marca:", error);
@@ -95,14 +96,14 @@ async function evaluarRanks(nombre, rubro, ubicacion) {
 
 async function evaluarPercepcion(nombre, rubro, ubicacion) {
   const prompt = armarPromptPercepcion(nombre, rubro, ubicacion);
-  
+
   try {
     let resultadoPercepcion = await generar(prompt);
     resultadoPercepcion = parsearJSON(resultadoPercepcion);
     console.log("Resultado de percepción:", resultadoPercepcion);
 
     return resultadoPercepcion;
-    
+
   } catch (error) {
     console.error("Error en una de las peticiones:", error);
     throw error;
