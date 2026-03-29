@@ -9,6 +9,7 @@ import { getMarkdownContent } from './webScrapper.js';
 
 
 export async function evaluarMarca({ nombre, rubro, ubicacion, relacionCalidadPrecio, urlPagina }) {
+  try {
   const KPIs = await evaluarKPIs(rubro, ubicacion, relacionCalidadPrecio);
 
   const ranks = await evaluarRanks(nombre, rubro, ubicacion);
@@ -32,6 +33,11 @@ export async function evaluarMarca({ nombre, rubro, ubicacion, relacionCalidadPr
   }
 
   const juez = await llamarAlJuez(urlPagina, resultado);
+
+  } catch (error) {
+    console.error("Error en la evaluación de la marca:", error);
+    throw new Error("Error en la evaluación de la marca");
+  }
 
   resultado = {
     ...resultado,

@@ -7,14 +7,19 @@ const ai = new GoogleGenAI({
 });
 
 export async function generar(prompt) {
-  const response = await ai.models.generateContent({
-    model: "gemini-2.5-flash-lite",
-    contents: [
-      {
-        parts: [{ text: prompt }]
-      }
-    ]
-  });
+  try {
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash-lite",
+      contents: [
+        {
+          parts: [{ text: prompt }]
+        }
+      ]
+    });
+  } catch (error) {
+    console.error("Error al generar contenido con Gemini:", error);
+    throw new Error("Error al generar contenido con Gemini");
+  }
 
   const text = response.text;
 

@@ -131,10 +131,16 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         });
 
+        // 🔴 chequeo explícito
+        if (!respuesta.ok) {
+            if (respuesta.status === 500) {
+                throw new Error('Error 500: fallo del servidor');
+            }
+            throw new Error(`HTTP error: ${respuesta.status}`);
+        }
+
         data = await respuesta.json();
 
-        if (!respuesta.ok) throw new Error("Fallo en el servidor");
-        data = await respuesta.json();
     } catch (error) {
         alert("Se supero la cuota máxima de tokens, por favor contactarse con el equipo de desarrollo para renovarla.");
         console.log(error);

@@ -18,7 +18,7 @@ export async function getEvaluacion(req, res) {
       urlPagina
     });
 
-    return res.json(resultado);
+    return res.status(200).json(resultado);
 
   } catch (error) {
     console.error('Error en evaluar:', error);
