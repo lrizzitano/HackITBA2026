@@ -320,13 +320,35 @@ function renderizarDashboard(data) {
                     tooltip: { backgroundColor: 'rgba(15, 23, 42, 0.9)', titleFont: { size: 14 }, bodyFont: { size: 14 }, padding: 12, callbacks: { label: function (context) { const d = context.raw; return `${d.nombre} → ${d.x}% menciones | ranking ${d.y}`; } } }
                 },
                 scales: {
-                    x: { min: 0, max: 100, title: { display: true, color: '#94a3b8', font: { size: 14, weight: 'bold' }, padding: { top: 10 } }, ticks: { color: '#e2e8f0', font: { size: 13 } }, grid: { color: (ctx) => ctx.tick.value === 50 ? 'rgba(255, 255, 255, 0.3)' : 'rgba(255, 255, 255, 0.05)', tickColor: 'transparent' } },
-                    y: { beginAtZero: true, title: { display: true, text: "Ranking Promedio", color: '#94a3b8', font: { size: 14, weight: 'bold' }, padding: { bottom: 10 } }, ticks: { color: '#e2e8f0', font: { size: 13 } }, grid: { color: 'rgba(255, 255, 255, 0.05)', tickColor: 'transparent' } }
+                    x: { 
+                        min: 0, 
+                        max: 100, 
+                        title: { 
+                            display: true, 
+                            text: "% Visibilidad", // 🔥 ESTO ES LO QUE FALTABA 🔥
+                            color: '#94a3b8', 
+                            font: { size: 14, weight: 'bold' }, 
+                            padding: { top: 10 } 
+                        }, 
+                        ticks: { color: '#e2e8f0', font: { size: 13 } }, 
+                        grid: { color: (ctx) => ctx.tick.value === 50 ? 'rgba(255, 255, 255, 0.3)' : 'rgba(255, 255, 255, 0.05)', tickColor: 'transparent' } 
+                    },
+                    y: { 
+                        beginAtZero: true, 
+                        title: { 
+                            display: true, 
+                            text: "Ranking Promedio", 
+                            color: '#94a3b8', 
+                            font: { size: 14, weight: 'bold' }, 
+                            padding: { bottom: 10 } 
+                        }, 
+                        ticks: { color: '#e2e8f0', font: { size: 13 } }, 
+                        grid: { color: 'rgba(255, 255, 255, 0.05)', tickColor: 'transparent' } 
+                    }
                 }
             }
         });
     }
-
     // =======================
     // RADAR - PERCEPCIÓN COMPLETA Y HEATMAP (Iguales)
     // =======================
