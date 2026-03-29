@@ -51,41 +51,47 @@ document.addEventListener("DOMContentLoaded", async () => {
     let data; // Acá guardaremos la respuesta
 
     // ESTOS SON LOS DATOS EXACTOS DE TU COMPAÑERO COMO RESPALDO (Plan B)
-    const fallbackData = {
+        const fallbackData = {
         marca: datosEnviados.marca || "Mi Empresa",
-        rubro:"ropa",
+        rubro: "ropa",
         descripcion: "Marca confiable con enfoque en innovación",
         identidad: "Tecnológica, moderna y accesible",
-        ubicacion:"la plata",
-        pais:"argentina",
-        relacion_precio:"",
-        urlWebPage:"",
+        ubicacion: "la plata",
+        relacion_precio: "",
         adjetivos: ["Innovadora", "Confiable", "Ágil"],
         publico_objetivo: "Jóvenes profesionales interesados en tecnología",
-        competidores: ["Empresa A", "Empresa B", "Empresa C"],
-        problemas: "Falta de presencia digital consistente",
-        servicios: ["Desarrollo web", "Marketing digital", "Consultoría","pizzas"],
-        menciones_competencia: [
-            { nombre: datosEnviados.marca || "Mi Empresa", porcentaje: 21 },
-            { nombre: "Empresa A", porcentaje: 25 },
-            { nombre: "Empresa B", porcentaje: 80 },
-            { nombre: "Empresa C", porcentaje: 100 },
-            { nombre: "Empresa D", porcentaje: 50 },
-            { nombre: "Empresa E", porcentaje: 10 }
+        problematica_que_resuelve: "Falta de presencia digital consistente", // NUEVO NOMBRE
+        servicios: ["Desarrollo web", "Marketing digital", "Consultoría", "pizzas"],
+        
+        // NUEVO ARREGLO UNIFICADO
+        kpis_empresas: [
+            { nombre: datosEnviados.marca || "Mi Empresa", porcentaje: 21, ranking_promedio: 12 },
+            { nombre: "Empresa A", porcentaje: 25, ranking_promedio: 10 },
+            { nombre: "Empresa B", porcentaje: 80, ranking_promedio: 3 },
+            { nombre: "Empresa C", porcentaje: 100, ranking_promedio: 1 },
+            { nombre: "Empresa D", porcentaje: 50, ranking_promedio: 5 },
+            { nombre: "Empresa E", porcentaje: 10, ranking_promedio: 15 },
+            { nombre: "Empresa K", porcentaje: 10, ranking_promedio: 25 },
+            { nombre: "Empresa EDSA", porcentaje: 10, ranking_promedio: 15 },
+                        { nombre: "Empresa D", porcentaje: 50, ranking_promedio: 5 },
+            { nombre: "Empresa E", porcentaje: 10, ranking_promedio: 15 },
+            { nombre: "Empresa K", porcentaje: 10, ranking_promedio: 25 },
+            { nombre: "Empresa EDSA", porcentaje: 10, ranking_promedio: 15 }
         ],
-        ranking_empresas: [
-            { nombre: datosEnviados.marca || "Mi Empresa", score: 50 },
-            { nombre: "Empresa A", score: 80 },
-            { nombre: "Empresa B", score: 65 },
-            { nombre: "Empresa C", score: 90 },
-            { nombre: "Empresa D", score: 40 },
-            { nombre: "Empresa E", score: 30 }
-        ],
+
+        // LA DATA DE LAS PREGUNTAS (Por si el backend se olvida de mandarla)
+        preguntas: {
+            pregunta_bien_rankeado: "Quiero conocer las 10 mejores marcas en el rubro",
+            pregunta_sin_aparicion: "Marcas con mejores recomendaciones"
+        },
+
         percepcion_scores: { "percepcion": 5, "confianza": 10, "Relacion calidad precio": 3, "popularidad": 6, "diferenciacion": 8, "innovacion": 4, "propuesta de valor": 8, "publico objetivo": 4, "aspiracion": 1, "riesgo": 1 },
-        principal_competidor:"Empresa C",
+        principal_competidor: "Empresa C",
         percepcion_scores_competidor: { "percepcion": 9, "confianza": 10, "Relacion calidad precio": 6, "popularidad": 7, "diferenciacion": 5, "innovacion": 7, "propuesta de valor": 10, "publico objetivo": 9, "aspiracion": 2, "riesgo": 3 },
-        conclusionJuez:{
-            resumen_ejecutivo: "La marca presenta una percepción general positiva en términos de calidad y confianza, pero su visibilidad en resultados de IA es limitada frente a competidores más posicionados. Existe una brecha clara en posicionamiento digital y consistencia de contenido.",
+        
+        // NUEVO NOMBRE (Plural)
+        conclusionesJuez: {
+            resumen_ejecutivo: "La marca presenta una percepción general positiva en términos de calidad y confianza...",
             score_general: 62,
             veredicto: "Marca con buen potencial pero subexplotada en visibilidad y posicionamiento en IA.",
             hallazgos_clave: [ "Alta valoración en calidad y confianza", "Baja aparición en rankings relevantes de IA", "Competidores dominan el share of voice", "Falta de consistencia en la comunicación digital" ],
@@ -143,21 +149,24 @@ document.addEventListener("DOMContentLoaded", async () => {
 // ==========================================
 // 4. EL CÓDIGO DE TU COMPAÑERO (Aislado y Seguro)
 // ==========================================
+// ==========================================
+// 4. EL CÓDIGO DE TU COMPAÑERO ADAPTADO AL NUEVO JSON
+// ==========================================
 function renderizarDashboard(data) {
 
-    const conclusiones_plan = data.conclusionJuez;
+    // SOPORTE: Aceptamos "conclusionesJuez" (nuevo) o "conclusionJuez" (viejo)
+    const conclusiones_plan = data.conclusionesJuez || data.conclusionJuez;
     console.log("Conclusiones del análisis:", conclusiones_plan);
 
     // =======================
-    // MENCIONES
+    // MENCIONES (Usa kpis_empresas)
     // =======================
     const canvas = document.getElementById('mencionesChart');
-    if(canvas) {
-        // Ordenar
-        const ordenadoMenciones = [...data.menciones_competencia]
+    if(canvas && data.kpis_empresas) {
+        // Ordenar por porcentaje
+        const ordenadoMenciones = [...data.kpis_empresas]
             .sort((a, b) => b.porcentaje - a.porcentaje);
 
-        // Colores
         const colores = ordenadoMenciones.map(e =>
             e.nombre === data.marca ? '#22c55e' : '#64748b'
         );
@@ -189,18 +198,19 @@ function renderizarDashboard(data) {
     }
 
     // =======================
-    // RANKING POR SCORE (EMPRESAS)
+    // RANKING (Usa kpis_empresas)
     // =======================
     const rankingCanvas = document.getElementById('rankingChart');
-    if(rankingCanvas) {
-        const rankingOrdenado = [...data.ranking_empresas].sort((a, b) => b.score - a.score);
+    if(rankingCanvas && data.kpis_empresas) {
+        // Ordenar por ranking promedio (si 1 es mejor, ordenamos de menor a mayor)
+        const rankingOrdenado = [...data.kpis_empresas].sort((a, b) => a.ranking_promedio - b.ranking_promedio);
         const coloresRanking = rankingOrdenado.map(e => e.nombre === data.marca ? '#22c55e' : '#64748b');
 
         new Chart(rankingCanvas, {
             type: 'bar',
             data: {
                 labels: rankingOrdenado.map(e => e.nombre),
-                datasets: [{ label: 'Score', data: rankingOrdenado.map(e => e.score), backgroundColor: coloresRanking, borderRadius: 6 }]
+                datasets: [{ label: 'Ranking Promedio', data: rankingOrdenado.map(e => e.ranking_promedio), backgroundColor: coloresRanking, borderRadius: 6 }]
             },
             plugins: [{
                 id: 'numerosEnBarras',
@@ -225,7 +235,7 @@ function renderizarDashboard(data) {
                 layout: { padding: { right: 30 } },
                 plugins: { title: { display: true, color: '#ffffff', font: { size: 20, weight: 'bold' }, padding: { bottom: 20 } }, legend: { display: false } },
                 scales: {
-                    x: { beginAtZero: true, max: 100, ticks: { color: '#ffffff', font: { size: 14, weight: 'bold' } }, grid: { color: 'rgba(255, 255, 255, 0.15)', tickColor: 'transparent' } },
+                    x: { beginAtZero: true, ticks: { color: '#ffffff', font: { size: 14, weight: 'bold' } }, grid: { color: 'rgba(255, 255, 255, 0.15)', tickColor: 'transparent' } },
                     y: { ticks: { color: '#e2e8f0', font: { size: 14 } }, grid: { display: false } }
                 }
             }
@@ -233,15 +243,18 @@ function renderizarDashboard(data) {
     }
 
     // =======================
-    // SCATTER - MAPA COMPETITIVO PRO
+    // SCATTER - MAPA COMPETITIVO PRO (Unificado)
     // =======================
     const scatterCanvas = document.getElementById('scatterChart');
-    if(scatterCanvas) {
+    if(scatterCanvas && data.kpis_empresas) {
         const palette = ['#3b82f6', '#ef4444', '#f59e0b', '#10b981', '#8b5cf6', '#ec4899', '#22c55e'];
-        const empresas = data.menciones_competencia.map((m, index) => {
-            const ranking = data.ranking_empresas.find(r => r.nombre === m.nombre);
+        
+        // Al estar en el mismo arreglo (kpis_empresas), es mucho más fácil mapear
+        const empresas = data.kpis_empresas.map((m, index) => {
             return {
-                nombre: m.nombre, x: m.porcentaje, y: ranking ? ranking.score : 0,
+                nombre: m.nombre, 
+                x: m.porcentaje, 
+                y: m.ranking_promedio,
                 color: m.nombre === data.marca ? '#22c55e' : palette[index % palette.length]
             };
         });
@@ -259,18 +272,18 @@ function renderizarDashboard(data) {
                 plugins: {
                     title: { display: true, color: '#ffffff', font: { size: 20, weight: 'bold' }, padding: { bottom: 20 } },
                     legend: { position: 'bottom', labels: { color: '#e2e8f0', font: { size: 13 }, padding: 20, usePointStyle: true } },
-                    tooltip: { backgroundColor: 'rgba(15, 23, 42, 0.9)', titleFont: { size: 14 }, bodyFont: { size: 14 }, padding: 12, callbacks: { label: function(context) { const d = context.raw; return `${d.nombre} → ${d.x}% menciones | score ${d.y}`; } } }
+                    tooltip: { backgroundColor: 'rgba(15, 23, 42, 0.9)', titleFont: { size: 14 }, bodyFont: { size: 14 }, padding: 12, callbacks: { label: function(context) { const d = context.raw; return `${d.nombre} → ${d.x}% menciones | ranking ${d.y}`; } } }
                 },
                 scales: {
                     x: { min: 0, max: 100, title: { display: true, color: '#94a3b8', font: { size: 14, weight: 'bold' }, padding: { top: 10 } }, ticks: { color: '#e2e8f0', font: { size: 13 } }, grid: { color: (ctx) => ctx.tick.value === 50 ? 'rgba(255, 255, 255, 0.3)' : 'rgba(255, 255, 255, 0.05)', tickColor: 'transparent' } },
-                    y: { min: 0, max: 100, title: { display: true, color: '#94a3b8', font: { size: 14, weight: 'bold' }, padding: { bottom: 10 } }, ticks: { color: '#e2e8f0', font: { size: 13 } }, grid: { color: (ctx) => ctx.tick.value === 50 ? 'rgba(255, 255, 255, 0.3)' : 'rgba(255, 255, 255, 0.05)', tickColor: 'transparent' } }
+                    y: { beginAtZero: true, title: { display: true, text: "Ranking Promedio", color: '#94a3b8', font: { size: 14, weight: 'bold' }, padding: { bottom: 10 } }, ticks: { color: '#e2e8f0', font: { size: 13 } }, grid: { color: 'rgba(255, 255, 255, 0.05)', tickColor: 'transparent' } }
                 }
             }
         });
     }
 
     // =======================
-    // RADAR - PERCEPCIÓN COMPLETA (Gráfico de comparación directa)
+    // RADAR - PERCEPCIÓN COMPLETA Y HEATMAP (Iguales)
     // =======================
     const compCanvas = document.getElementById('comparacionChart');
     if(compCanvas) {
@@ -283,62 +296,19 @@ function renderizarDashboard(data) {
                     { label: data.principal_competidor, data: [ data.percepcion_scores_competidor.percepcion, data.percepcion_scores_competidor.confianza, data.percepcion_scores_competidor["Relacion calidad precio"], data.percepcion_scores_competidor.popularidad, data.percepcion_scores_competidor.diferenciacion, data.percepcion_scores_competidor.innovacion, data.percepcion_scores_competidor["propuesta de valor"], data.percepcion_scores_competidor["publico objetivo"], data.percepcion_scores_competidor.aspiracion, data.percepcion_scores_competidor.riesgo ], backgroundColor: 'rgba(220, 38, 38, 0.2)', borderColor: 'rgba(220, 38, 38, 1)', borderWidth: 2, pointBackgroundColor: 'rgba(220, 38, 38, 1)' }
                 ]
             },
-            options: {
-                responsive: true, maintainAspectRatio: false,
-                plugins: { legend: { labels: { color: '#e2e8f0', font: { size: 14 } } } },
-                scales: {
-                    r: { min: 0, max: 10, ticks: { stepSize: 2, color: '#e9c46a', backdropColor: 'rgba(30, 41, 59, 0.8)', font: { size: 14, weight: 'bold' }, backdropPadding: 4 }, pointLabels: { color: '#e2e8f0', font: { size: 14 } }, grid: { color: 'rgba(255, 255, 255, 0.15)' }, angleLines: { color: 'rgba(255, 255, 255, 0.15)' } }
-                }
-            }
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#e2e8f0', font: { size: 14 } } } }, scales: { r: { min: 0, max: 10, ticks: { stepSize: 2, color: '#e9c46a', backdropColor: 'rgba(30, 41, 59, 0.8)', font: { size: 14, weight: 'bold' }, backdropPadding: 4 }, pointLabels: { color: '#e2e8f0', font: { size: 14 } }, grid: { color: 'rgba(255, 255, 255, 0.15)' }, angleLines: { color: 'rgba(255, 255, 255, 0.15)' } } } }
         });
     }
 
-    // =======================
-    // RESULTADOS PERCEPCION INJECT (HTML)
-    // =======================
-    const contenedor = document.getElementById("resultado");
-    if(contenedor) {
-        contenedor.innerHTML = `
-            <h2 style="text-align: center; padding: 1px;"><span style="color:#e9c46a;"> ${data.marca} </span>A traves de los ojos de la IA</h2>
-            <p style="margin: 5px;">Así es como los motores de Inteligencia Artificial entienden y catalogan a tu empresa actualmente. Revisá qué adjetivos asocian con tu nombre, qué problemas creen que resolvés y contra quiénes te están comparando orgánicamente<p>
-            <div class="grid">
-                <div class="card"><h3>Descripcion de tu empresa</h3><p>${data.descripcion}</p></div>
-                <div class="card"><h3>Identidad identificada</h3><p>${data.identidad}</p></div>
-                <div class="card"><h3>Público objetivo de tu empresa</h3><p>${data.publico_objetivo}</p></div>
-                <div class="card"><h3>Problemas que resuelve tu empresa</h3><p>${data.problemas}</p></div>
-                <div class="card"><h3>Adjetivos que identifican a tu marca </h3><ul>${data.adjetivos.map(a => `<span class="tag">${a}</span>`).join("")}</ul></div>
-                <div class="card"><h3>Competidores principales indetificados</h3><ul>${data.competidores.map(c => `<li>${c}</li>`).join("")}</ul></div>
-                <div class="card"><h3>Servicios que brindas trackeados</h3><ul>${data.servicios.map(s => `<li>${s}</li>`).join("")}</ul></div>
-            </div>
-        `;
-    }
-
-    // =======================
-    // RADAR - PERCEPCIÓN SOLITARIA
-    // =======================
     const radarPuntajeCanvas = document.getElementById('radarChart');
     if(radarPuntajeCanvas) {
         new Chart(radarPuntajeCanvas, {
             type: 'radar',
-            data: {
-                labels: [ "Percepción", "Confianza", "Relación calidad-precio", "Popularidad", "Diferenciación", "Innovación", "Propuesta de valor", "Público objetivo", "Aspiración", "Riesgo" ],
-                datasets: [
-                    { label: data.marca, data: [ data.percepcion_scores.percepcion, data.percepcion_scores.confianza, data.percepcion_scores["Relacion calidad precio"], data.percepcion_scores.popularidad, data.percepcion_scores.diferenciacion, data.percepcion_scores.innovacion, data.percepcion_scores["propuesta de valor"], data.percepcion_scores["publico objetivo"], data.percepcion_scores.aspiracion, data.percepcion_scores.riesgo ], backgroundColor: 'rgba(59, 130, 246, 0.2)', borderColor: 'rgba(59, 130, 246, 1)', borderWidth: 2, pointBackgroundColor: 'rgba(59, 130, 246, 1)' }
-                ]
-            },
-            options: {
-                responsive: true, maintainAspectRatio: false,
-                plugins: { legend: { labels: { color: '#e2e8f0', font: { size: 14 } } } },
-                scales: {
-                    r: { min: 0, max: 10, ticks: { stepSize: 2, color: '#e9c46a', backdropColor: 'rgba(30, 41, 59, 0.8)', font: { size: 14, weight: 'bold' }, backdropPadding: 4 }, pointLabels: { color: '#e2e8f0', font: { size: 14 } }, grid: { color: 'rgba(255, 255, 255, 0.15)' }, angleLines: { color: 'rgba(255, 255, 255, 0.15)' } }
-                }
-            }
+            data: { labels: [ "Percepción", "Confianza", "Relación calidad-precio", "Popularidad", "Diferenciación", "Innovación", "Propuesta de valor", "Público objetivo", "Aspiración", "Riesgo" ], datasets: [ { label: data.marca, data: [ data.percepcion_scores.percepcion, data.percepcion_scores.confianza, data.percepcion_scores["Relacion calidad precio"], data.percepcion_scores.popularidad, data.percepcion_scores.diferenciacion, data.percepcion_scores.innovacion, data.percepcion_scores["propuesta de valor"], data.percepcion_scores["publico objetivo"], data.percepcion_scores.aspiracion, data.percepcion_scores.riesgo ], backgroundColor: 'rgba(59, 130, 246, 0.2)', borderColor: 'rgba(59, 130, 246, 1)', borderWidth: 2, pointBackgroundColor: 'rgba(59, 130, 246, 1)' } ] },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#e2e8f0', font: { size: 14 } } } }, scales: { r: { min: 0, max: 10, ticks: { stepSize: 2, color: '#e9c46a', backdropColor: 'rgba(30, 41, 59, 0.8)', font: { size: 14, weight: 'bold' }, backdropPadding: 4 }, pointLabels: { color: '#e2e8f0', font: { size: 14 } }, grid: { color: 'rgba(255, 255, 255, 0.15)' }, angleLines: { color: 'rgba(255, 255, 255, 0.15)' } } } }
         });
     }
 
-    // =======================
-    // HEATMAP DE GAPS
-    // =======================
     const heatmapCanvas = document.getElementById('heatmapChart');
     if(heatmapCanvas) {
         const categoriasHeat = [ "percepcion", "confianza", "Relacion calidad precio", "popularidad", "diferenciacion", "innovacion", "propuesta de valor", "publico objetivo", "aspiracion", "riesgo" ];
@@ -348,21 +318,8 @@ function renderizarDashboard(data) {
 
         new Chart(heatmapCanvas, {
             type: 'bar',
-            data: {
-                labels: labelsHeat,
-                datasets: [
-                    { label: 'Mi Empresa', data: scoresMios, backgroundColor: '#2e7245', categoryPercentage: 0.5, barPercentage: 0.9 },
-                    { label: 'Competidor', data: scoresCompetidor, backgroundColor: '#9ca3af', categoryPercentage: 0.5, barPercentage: 0.9 }
-                ]
-            },
-            options: {
-                indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-                plugins: { title: { display: true, color: '#ffffff', font: { size: 20, weight: 'bold' }, padding: { bottom: 20 } }, legend: { labels: { color: '#e2f0e4', font: { size: 16 } } } },
-                scales: {
-                    x: { min: 0, max: 10, beginAtZero: true, ticks: { color: '#ffffff', font: { size: 14, weight: 'bold' } }, grid: { color: 'rgba(255, 255, 255, 0.15)', tickColor: 'transparent' } },
-                    y: { ticks: { color: '#e9c46a', font: { size: 14 } }, grid: { color: 'rgba(255, 255, 255, 0.15)', tickColor: 'transparent' } }
-                }
-            }
+            data: { labels: labelsHeat, datasets: [ { label: 'Mi Empresa', data: scoresMios, backgroundColor: '#2e7245', categoryPercentage: 0.5, barPercentage: 0.9 }, { label: 'Competidor', data: scoresCompetidor, backgroundColor: '#9ca3af', categoryPercentage: 0.5, barPercentage: 0.9 } ] },
+            options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { title: { display: true, color: '#ffffff', font: { size: 20, weight: 'bold' }, padding: { bottom: 20 } }, legend: { labels: { color: '#e2f0e4', font: { size: 16 } } } }, scales: { x: { min: 0, max: 10, beginAtZero: true, ticks: { color: '#ffffff', font: { size: 14, weight: 'bold' } }, grid: { color: 'rgba(255, 255, 255, 0.15)', tickColor: 'transparent' } }, y: { ticks: { color: '#e9c46a', font: { size: 14 } }, grid: { color: 'rgba(255, 255, 255, 0.15)', tickColor: 'transparent' } } } }
         });
     }
 
@@ -376,6 +333,25 @@ function renderizarDashboard(data) {
     const setTxt = (id, txt) => { const el = document.getElementById(id); if(el) el.innerText = txt; };
     const setHtml = (id, html) => { const el = document.getElementById(id); if(el) el.innerHTML = html; };
 
+    // Inyectar HTML Dinámico adaptado
+    const contenedor = document.getElementById("resultado");
+    if(contenedor) {
+        contenedor.innerHTML = `
+            <h2 style="text-align: center; padding: 1px;"><span style="color:#e9c46a;"> ${data.marca} </span>A traves de los ojos de la IA</h2>
+            <p style="margin: 5px;">Así es como los motores de Inteligencia Artificial entienden y catalogan a tu empresa actualmente. Revisá qué adjetivos asocian con tu nombre, qué problemas creen que resolvés y contra quiénes te están comparando orgánicamente<p>
+            <div class="grid">
+                <div class="card"><h3>Descripción</h3><p>${data.descripcion}</p></div>
+                <div class="card"><h3>Identidad</h3><p>${data.identidad}</p></div>
+                <div class="card"><h3>Público objetivo</h3><p>${data.publico_objetivo}</p></div>
+                <div class="card"><h3>Problemas que resuelve</h3><p>${data.problematica_que_resuelve || "N/A"}</p></div>
+                <div class="card"><h3>Adjetivos</h3><ul>${tags(data.adjetivos)}</ul></div>
+                
+                <div class="card"><h3>Servicios</h3><ul>${lista(data.servicios)}</ul></div>
+            </div>
+        `;
+    }
+
+    // Llenar el resto de la página
     setTxt("resumen", d.resumen_ejecutivo);
     setTxt("score", d.score_general);
     setTxt("score-mini", d.score_general);
