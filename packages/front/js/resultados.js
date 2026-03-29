@@ -302,13 +302,13 @@ function renderizarDashboard(data) {
             <h2 style="text-align: center; padding: 1px;"><span style="color:#e9c46a;"> ${data.marca} </span>A traves de los ojos de la IA</h2>
             <p style="margin: 5px;">Así es como los motores de Inteligencia Artificial entienden y catalogan a tu empresa actualmente. Revisá qué adjetivos asocian con tu nombre, qué problemas creen que resolvés y contra quiénes te están comparando orgánicamente<p>
             <div class="grid">
-                <div class="card"><h3>Descripción</h3><p>${data.descripcion}</p></div>
-                <div class="card"><h3>Identidad</h3><p>${data.identidad}</p></div>
-                <div class="card"><h3>Público objetivo</h3><p>${data.publico_objetivo}</p></div>
-                <div class="card"><h3>Problemas que resuelve</h3><p>${data.problemas}</p></div>
-                <div class="card"><h3>Adjetivos</h3><ul>${data.adjetivos.map(a => `<span class="tag">${a}</span>`).join("")}</ul></div>
-                <div class="card"><h3>Competidores</h3><ul>${data.competidores.map(c => `<li>${c}</li>`).join("")}</ul></div>
-                <div class="card"><h3>Servicios</h3><ul>${data.servicios.map(s => `<li>${s}</li>`).join("")}</ul></div>
+                <div class="card"><h3>Descripcion de tu empresa</h3><p>${data.descripcion}</p></div>
+                <div class="card"><h3>Identidad identificada</h3><p>${data.identidad}</p></div>
+                <div class="card"><h3>Público objetivo de tu empresa</h3><p>${data.publico_objetivo}</p></div>
+                <div class="card"><h3>Problemas que resuelve tu empresa</h3><p>${data.problemas}</p></div>
+                <div class="card"><h3>Adjetivos que identifican a tu marca </h3><ul>${data.adjetivos.map(a => `<span class="tag">${a}</span>`).join("")}</ul></div>
+                <div class="card"><h3>Competidores principales indetificados</h3><ul>${data.competidores.map(c => `<li>${c}</li>`).join("")}</ul></div>
+                <div class="card"><h3>Servicios que brindas trackeados</h3><ul>${data.servicios.map(s => `<li>${s}</li>`).join("")}</ul></div>
             </div>
         `;
     }
