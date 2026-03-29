@@ -1,17 +1,58 @@
 // --- LÓGICA DE LOS MODALES ---
 document.addEventListener('DOMContentLoaded', () => {
-    // Referencias a los Modales
+    // --- LÓGICA DE NAVEGACIÓN (HOME VS SERVICIOS) ---
+    const logoHome = document.getElementById('logoHome');
+    const btnShowServices = document.getElementById('btnShowServices');
+    const homePageContent = document.getElementById('homePageContent');
+    const servicesPageContent = document.getElementById('servicesPageContent');
+
+    // Referencias a los modales
     const modalAuditoria = document.getElementById('modalAuditoria');
     const modalLogin = document.getElementById('modalLogin');
     
-    // TODOS los botones que abren Auditoría
+    // 🔥 ESTO ERA LO QUE FALTABA: Referencias a los botones de cerrar (la X)
+    const closeAuditoria = document.getElementById('closeAuditoria');
+    const closeLogin = document.getElementById('closeLogin');
+
+    // Función para cambiar de "página"
+    const showPage = (pageToShow) => {
+        if (pageToShow === 'services') {
+            homePageContent.style.display = 'none';
+            servicesPageContent.style.display = 'block';
+            window.scrollTo(0, 0); 
+            btnShowServices.style.color = '#e9c46a'; 
+        } else {
+            homePageContent.style.display = 'block';
+            servicesPageContent.style.display = 'none';
+            btnShowServices.style.color = '#d1d5db'; 
+        }
+    };
+
+    // Eventos de Navegación
+    if(btnShowServices) {
+        btnShowServices.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPage('services');
+        });
+    }
+
+    if(logoHome) {
+        logoHome.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPage('home');
+        });
+    }
+    
+    // Referencias a los botones de Auditoría
     const btnOpenAuditoriaNav = document.getElementById('btnOpenAuditoriaNav');
     const btnOpenAuditoriaBtn = document.getElementById('btnOpenAuditoriaBtn');
-    const btnOpenAuditoriaHero = document.getElementById('btnOpenAuditoriaHero'); // <-- NUEVO
-    const btnOpenAuditoriaPricing1 = document.getElementById('btnOpenAuditoriaPricing1'); // <-- NUEVO
-    const btnOpenAuditoriaPricing2 = document.getElementById('btnOpenAuditoriaPricing2'); // <-- NUEVO
+    const btnOpenAuditoriaHero = document.getElementById('btnOpenAuditoriaHero'); 
+    const btnOpenAuditoriaPricing1 = document.getElementById('btnOpenAuditoriaPricing1'); 
+    const btnOpenAuditoriaPricing2 = document.getElementById('btnOpenAuditoriaPricing2'); 
+    const btnOpenAuditoriaServices = document.getElementById('btnOpenAuditoriaServices');
+    const btnOpenAuditoriaServicesBottom = document.getElementById('btnOpenAuditoriaServicesBottom');
     
-    // Botón para abrir Login
+    // Referencia al botón de Login
     const btnOpenLogin = document.getElementById('btnOpenLogin');
 
     // Función genérica para abrir un modal
@@ -23,14 +64,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Asignar eventos de apertura a TODOS los botones
     if(btnOpenAuditoriaNav) btnOpenAuditoriaNav.addEventListener('click', (e) => openModal(e, modalAuditoria));
     if(btnOpenAuditoriaBtn) btnOpenAuditoriaBtn.addEventListener('click', (e) => openModal(e, modalAuditoria));
-    
-    // <-- NUEVOS EVENTOS -->
     if(btnOpenAuditoriaHero) btnOpenAuditoriaHero.addEventListener('click', (e) => openModal(e, modalAuditoria));
     if(btnOpenAuditoriaPricing1) btnOpenAuditoriaPricing1.addEventListener('click', (e) => openModal(e, modalAuditoria));
     if(btnOpenAuditoriaPricing2) btnOpenAuditoriaPricing2.addEventListener('click', (e) => openModal(e, modalAuditoria));
+    if(btnOpenAuditoriaServices) btnOpenAuditoriaServices.addEventListener('click', (e) => openModal(e, modalAuditoria));
+    if(btnOpenAuditoriaServicesBottom) btnOpenAuditoriaServicesBottom.addEventListener('click', (e) => openModal(e, modalAuditoria));
+    
     if(btnOpenLogin) btnOpenLogin.addEventListener('click', (e) => openModal(e, modalLogin));
 
-    // Asignar eventos de cierre (la X)
+    // Asignar eventos de cierre (la X) ¡Aca explotaba antes!
     if(closeAuditoria) closeAuditoria.addEventListener('click', () => modalAuditoria.style.display = 'none');
     if(closeLogin) closeLogin.addEventListener('click', () => modalLogin.style.display = 'none');
 
@@ -42,27 +84,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- LÓGICA SIMULADA DEL LOGIN ---
     const loginForm = document.getElementById('loginForm');
-    const loginMessage = document.getElementById('loginMessage'); // Capturamos el div del mensaje
+    const loginMessage = document.getElementById('loginMessage'); 
 
     if(loginForm) {
         loginForm.addEventListener('submit', (e) => {
-            e.preventDefault(); // Evita que recargue la página
+            e.preventDefault(); 
             
-            // 1. Mostrar el mensaje de éxito en verde esmeralda
             loginMessage.style.display = 'block';
             loginMessage.style.color = '#10b981'; 
             loginMessage.innerText = "¡Bienvenido! Sesión iniciada correctamente.";
 
-            // 2. Deshabilitar el botón para que no hagan doble clic
             const btnSubmit = loginForm.querySelector('button[type="submit"]');
             btnSubmit.innerText = "Ingresando...";
             btnSubmit.disabled = true;
 
-            // 3. Esperar 1.5 segundos para que el usuario lea el mensaje, luego cerrar el modal
             setTimeout(() => {
-                modalLogin.style.display = 'none'; // Cierra el modal
+                modalLogin.style.display = 'none'; 
                 
-                // Resetea el modal por si lo vuelven a abrir
                 loginMessage.style.display = 'none';
                 loginForm.reset();
                 btnSubmit.innerText = "Ingresar a la plataforma";
@@ -71,7 +109,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-
 // --- EFECTO DE ESCRITURA EN LA TERMINAL (HERO) ---
 document.addEventListener('DOMContentLoaded', () => {
     const textElement = document.getElementById('typing-text');
