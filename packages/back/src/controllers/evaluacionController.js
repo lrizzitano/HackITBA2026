@@ -2,9 +2,9 @@ import { evaluarMarca } from '../services/evaluacionService.js';
 
 export async function getEvaluacion(req, res) {
   try {
-    const { nombre, rubro, ubicacion, relacionCalidadPrecio } = req.query;
+    const { nombre, rubro, ubicacion, relacionCalidadPrecio, urlPagina } = req.query;
     console.log(req.query)
-    if (!nombre || !rubro || !ubicacion || !relacionCalidadPrecio) {
+    if (!nombre || !rubro || !ubicacion || !relacionCalidadPrecio || !urlPagina) {
       return res.status(400).json({
         error: 'Faltan campos requeridos'
       });
@@ -14,7 +14,8 @@ export async function getEvaluacion(req, res) {
       nombre,
       rubro,
       ubicacion,
-      relacionCalidadPrecio
+      relacionCalidadPrecio,
+      urlPagina
     });
 
     return res.json(resultado);
