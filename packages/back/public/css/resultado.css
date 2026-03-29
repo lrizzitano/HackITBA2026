@@ -164,7 +164,7 @@ body {
 .skeleton-header {
     width: 35%;
     height: 35px;
-    background: #2d3748; /* Gris oscuro Reconocia */
+    background: #2d3748; /* Gris oscuro Rankifai */
     border-radius: 6px;
     margin-bottom: 15px;
     animation: pulse 1.5s infinite ease-in-out;
