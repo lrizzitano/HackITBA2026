@@ -1,27 +1,24 @@
 {
-  "name": "trisha",
+  "name": "back",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "private":"true",
-  "workspaces":[
-    "packages/front",
-    "packages/back"
-  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev:front" : "npm run dev -w packages/front",
-    "dev:back" : "npm run dev -w packages/back"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/PGabarini/Trisha.git"
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/PGabarini/Trisha/issues"
+  "dependencies": {
+    "@google/genai": "^1.46.0",
+    "@tavily/core": "^0.7.2",
+    "chatgpt": "^5.2.5",
+    "axios": "^1.14.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "openai": "^6.33.0"
   },
-  "homepage": "https://github.com/PGabarini/Trisha#readme"
+  "type": "module"
 }
