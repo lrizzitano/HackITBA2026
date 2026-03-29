@@ -641,6 +641,60 @@ new Chart(document.getElementById('comparacionChart'), {
     }
 });
 
+// =======================
+// HEATMAP DE GAPS
+// =======================
+
+const categoriasHeat = [
+    "calidad",
+    "confianza",
+    "riesgo_e_incertidumbre",
+    "atencion_al_cliente",
+    "nivel_servicio",
+    "presencia_en_la_web"
+];
+
+const labelsHeat = [
+    "Calidad",
+    "Confianza",
+    "Riesgo",
+    "Atención",
+    "Servicio",
+    "Web"
+];
+
+const gaps = categoriasHeat.map(k =>
+    data.percepcion_scores[k] - data.percepcion_scores_competidor[k]
+);
+
+new Chart(document.getElementById('heatmapChart'), {
+    type: 'bar',
+    data: {
+        labels: labelsHeat,
+        datasets: [{
+            label: 'Gap vs competidor',
+            data: gaps,
+            backgroundColor: gaps.map(v =>
+                v > 0 ? '#22c55e' : '#ef4444'
+            )
+        }]
+    },
+    options: {
+        plugins: {
+            title: {
+                display: true,
+                text: 'Dónde ganás vs dónde perdés'
+            }
+        },
+        scales: {
+            y: {
+                min: -10,
+                max: 10
+            }
+        }
+    }
+});
+
 //ANALISIS FINAL
 
 
@@ -656,6 +710,7 @@ const tags = (arr) => arr.map(i => `<span class="tag">${i}</span>`).join("");
 // =======================
 document.getElementById("resumen").innerText = d.resumen_ejecutivo;
 document.getElementById("score").innerText = d.score_general;
+document.getElementById("score-mini").innerText = d.score_general;
 document.getElementById("veredicto").innerText = d.veredicto;
 
 // =======================
@@ -705,18 +760,28 @@ document.getElementById("plan").innerHTML = d.plan_de_accion.map(t => `
 document.getElementById("confianza-bar").style.width = (d.confianza_del_analisis * 100) + "%";
 
 document.getElementById("cov-web").style.width = (d.cobertura_de_fuentes.website * 100) + "%";
+
 document.getElementById("cov-men").style.width = (d.cobertura_de_fuentes.menciones * 100) + "%";
+
 document.getElementById("cov-rank").style.width = (d.cobertura_de_fuentes.ranking * 100) + "%";
+
 document.getElementById("cov-pre").style.width = (d.cobertura_de_fuentes.preguntas * 100) + "%";
 
 // =======================
 // IMPACTO
 // =======================
+
 document.getElementById("impacto").innerHTML = `
 📈 Visibilidad: ${d.impacto_estimado.visibilidad} <br>
 🏆 Ranking: ${d.impacto_estimado.ranking} <br>
 💰 Conversión: ${d.impacto_estimado.conversion}
 `;
+
+    document.getElementById("impacto-sidebar").innerHTML = `
+         Visibilidad: ${d.impacto_estimado.visibilidad} <br>
+        Ranking: ${d.impacto_estimado.ranking} <br>
+         Conversión: ${d.impacto_estimado.conversion}
+    `;
 
 
 

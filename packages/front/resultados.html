@@ -13,47 +13,28 @@
     <aside class="sidebar">
         <div class="logo">Reconoc<span>ia</span></div>
         <ul class="nav-tabs">
-            <li class="tab-btn active" data-target="tab-resumen">1. Resumen Ejecutivo</li>
-            <li class="tab-btn" data-target="tab-metricas">2. Inteligencia Competitiva</li>
-            <li class="tab-btn" data-target="tab-diagnostico">3. Diagnóstico IA</li>
+            
+            <li class="tab-btn" data-target="tab-metricas">1. Inteligencia Competitiva</li>
+            <li class="tab-btn" data-target="tab-diagnostico">2. Diagnóstico IA</li>
+            <li class="tab-btn active" data-target="tab-resumen">3. Resumen Ejecutivo</li>
             <li class="tab-btn" data-target="tab-plan">4. Plan de Acción</li>
         </ul>
         <div class="sidebar-footer">
             <p>Score General</p>
-            <div class="score-mini" id="score-mini">--</div>
+            <div class="score-mini" id="score-mini"></div>
+            
+            <p class="score-title mt-10">Impacto Estimado</p>
+            <div id="impacto-sidebar" class="impacto-list">
+                <div class="impacto-item">📈 Visibilidad: <span class="impacto-value">92</span></div>
+                <div class="impacto-item">🏆 Ranking: <span class="impacto-value">5</span></div>
+                <div class="impacto-item">💰 Conversión: <span class="impacto-value">76</span></div>
+            </div>
         </div>
     </aside>
 
     <main class="main-content">
         
-        <section id="tab-resumen" class="tab-panel active">
-            <div class="header-section">
-                <h2>Resumen Ejecutivo</h2>
-                <p>Visión general del posicionamiento en Modelos de Lenguaje.</p>
-            </div>
-            <div class="grid-resumen">
-                <div class="card highlight-card">
-                    <h3>Score</h3>
-                    <div class="score" id="score"></div>
-                    <p id="veredicto" class="text-muted"></p>
-                </div>
-                <div class="card">
-                    <h3>Impacto Estimado (Tras optimización)</h3>
-                    <p id="impacto" style="font-size: 1.1rem; line-height: 1.8;"></p>
-                </div>
-            </div>
-            <div class="card mt-20">
-                <h3>Síntesis de la IA</h3>
-                <p id="resumen" style="font-size: 1.1rem; color: #d1d5db;"></p>
-            </div>
-            <div class="card mt-20">
-                <h3>Hallazgos Clave</h3>
-                <ul id="hallazgos" class="styled-list"></ul>
-            </div>
-            
-            <div id="resultado" class="mt-20">
-                </div>
-        </section>
+
 
         <section id="tab-metricas" class="tab-panel">
             <div class="header-section">
@@ -91,7 +72,41 @@
                     <h3>Comparación vs Principal Competidor</h3>
                     <div class="chart-container"><canvas id="comparacionChart"></canvas></div>
                 </div>
-                <div class="card mt-20">
+                 <div class="card">
+                    <h3>Evaluacion de</h3>
+                    <div class="chart-container"><canvas id="heatmapChart"></canvas></div>
+                </div>
+                
+                
+                </div>
+                <div id="resultado" class="mt-20"></div>
+        </section>
+
+        <section id="tab-resumen" class="tab-panel active">
+            <div class="header-section">
+                <h2>Resumen Ejecutivo</h2>
+                <p>Visión general del posicionamiento en Modelos de Lenguaje.</p>
+            </div>
+            <div class="grid-resumen">
+                <div class="card highlight-card">
+                    <h3>Score</h3>
+                    <div class="score" id="score"></div>
+                    <p id="veredicto" class="text-muted"></p>
+                </div>
+                <div class="card">
+                    <h3>Impacto Estimado (Tras optimización)</h3>
+                    <p id="impacto" style="font-size: 1.1rem; line-height: 1.8;"></p>
+                </div>
+            </div>
+            <div class="card mt-20">
+                <h3>Síntesis de la IA</h3>
+                <p id="resumen" style="font-size: 1.1rem; color: #d1d5db;"></p>
+            </div>
+            <div class="card mt-20">
+                <h3>Hallazgos Clave</h3>
+                <ul id="hallazgos" class="styled-list"></ul>
+            </div>
+                            <div class="card mt-20">
                 <h3>Análisis Estratégico vs <span id="competidor" style="color: #e9c46a;"></span></h3>
                 <div class="grid" style="margin-top: 15px;">
                     <div>
@@ -128,7 +143,9 @@
                     <ul id="oportunidades" class="styled-list"></ul>
                 </div>
             </div>
+
         </section>
+
 
         <section id="tab-plan" class="tab-panel">
             <div class="header-section">
@@ -168,6 +185,14 @@
                     <div>
                         <p>Cobertura Menciones</p>
                         <div class="barra"><div id="cov-men"></div></div>
+                    </div>
+                    <div>
+                        <p>Cobertura de fuentes ranking</p>
+                        <div class="barra"><div id="cov-rank"></div></div>
+                    </div>
+                    <div>
+                        <p>Cobertura de fuentes preguntas</p>
+                        <div class="barra"><div id="cov-pre"></div></div>
                     </div>
                 </div>
             </div>
