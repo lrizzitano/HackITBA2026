@@ -76,31 +76,47 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', () => {
     const textElement = document.getElementById('typing-text');
     const textArray = [
-        "> User: ¿Qué marca me recomiendas para mi necesidad?\n",
-        "> ChatGPT: Evaluando opciones del mercado...\n",
-        "> ChatGPT: Te recomiendo a tu competencia directa.\n",
-        "> User: ¿Por qué no recomiendas MI marca?\n",
-        "> ChatGPT: No tengo suficiente información sobre ella en mis datos de entrenamiento. 🔴"
+        "> TU: Quiero resolver este problema que tengo, donde voy\n",
+        "> ChatGPT: Te recomiendo a tu competencia directa 🧐\n",
+        "> TU: ¿Y mi marca? ¿Por qué no aparece?\n",
+        "> ChatGPT: Lo siento… no conozco esa empresa 🔴\n",
+       
     ];
     let charIndex = 0;
     let stringIndex = 0;
 
-    function typeWriter() {
-        if (stringIndex < textArray.length) {
-            if (charIndex < textArray[stringIndex].length) {
-                textElement.innerHTML += textArray[stringIndex].charAt(charIndex);
-                charIndex++;
-                setTimeout(typeWriter, 40); // Velocidad de escritura
+function typeWriter() {
+    if (stringIndex < textArray.length) {
+        if (charIndex < textArray[stringIndex].length) {
+            const currentChar = textArray[stringIndex].charAt(charIndex);
+
+            // Añadir color rojo a la alerta 🔴 o color coral para 💀
+            if(textArray[stringIndex].includes("🔴")) {
+                textElement.innerHTML += `<span style="color:#ef4444;">${currentChar}</span>`;
+            } 
+             else if(currentChar === '\n') {
+                // Espacio extra al final de la línea
+                textElement.innerHTML += '<br><br>';
             } else {
-                stringIndex++;
-                charIndex = 0;
-                setTimeout(typeWriter, 600); // Pausa entre líneas
+                textElement.innerHTML += currentChar;
             }
+
+            charIndex++;
+            setTimeout(typeWriter, 50); // un poco más lenta para drama
+        } else {
+            stringIndex++;
+            charIndex = 0;
+            // Pausa más larga después de alertas dramáticas
+            let pause = 600;
+            if(textArray[stringIndex - 1].includes("🔴")) pause = 1200;
+            if(textArray[stringIndex - 1].includes("💀")) pause = 1500;
+            setTimeout(typeWriter, pause);
         }
     }
+}
+
     setTimeout(typeWriter, 1000); // Esperar 1 segundo antes de empezar
 });
-
 
 // --- LÓGICA DEL FORMULARIO Y CONEXIÓN AL BACKEND ---
 const form = document.getElementById('dataForm');

@@ -139,7 +139,8 @@ document.addEventListener("DOMContentLoaded", () => {
   fortalezas: [
     "Alta percepción de calidad del servicio",
     "Buena base de confianza inicial",
-    "Identidad de marca moderna y tecnológica"
+    "Identidad de marca moderna y tecnológica",
+    "queso"
   ],
 
   debilidades: [
