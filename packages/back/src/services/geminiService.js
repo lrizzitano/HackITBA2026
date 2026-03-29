@@ -7,9 +7,10 @@ const ai = new GoogleGenAI({
 });
 
 export async function generar(prompt) {
+  let  response;
   try {
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash-lite",
+    response = await ai.models.generateContent({
+    model: "gemini-2.5-flash-lite",
       contents: [
         {
           parts: [{ text: prompt }]
